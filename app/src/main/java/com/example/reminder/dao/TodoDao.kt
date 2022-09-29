@@ -18,11 +18,11 @@ interface TodoDao {
     fun list(): LiveData<MutableList<Todo>>
 
     @Query("select * from todoTable where id = (:id)")
-    fun selectOn(id: Long):Todo
+    fun selectOne(id: Long): Todo
 
     @Update
-    suspend fun update(dto:Todo)
+    fun update(dto: Todo)
 
     @Delete
-    fun delete(dto:Todo)
+    fun delete(dto: Todo)
 }

@@ -20,25 +20,26 @@ class TodoRepository private constructor(context: Context){
 
     fun list(): LiveData<MutableList<Todo>> = todoDao.list()
 
-    fun getTodo(id: Long):Todo = todoDao.selectOn(id)
+    fun getTodo(id: Long): Todo = todoDao.selectOne(id)
 
-    fun insert(dto:Todo) = todoDao.insert(dto)
+    fun insert(dto: Todo) = todoDao.insert(dto)
 
-    suspend fun update(dto: Todo) = todoDao.delete(dto)
+    suspend fun update(dto: Todo) = todoDao.update(dto)
 
-    fun delete(dto:Todo) = todoDao.delete(dto)
+    fun delete(dto: Todo) = todoDao.delete(dto)
 
-    companion object{
-        private var INSTANCE : TodoRepository?=null
+    companion object {
+        private var INSTANCE: TodoRepository?=null
 
-        fun initialize(context: Context){
-            if(INSTANCE == null){
+        fun initialize(context: Context) {
+            if (INSTANCE == null) {
                 INSTANCE = TodoRepository(context)
             }
         }
 
-        fun get(): TodoRepository{
-            return INSTANCE ?: throw IllegalStateException("TodoRepository must be initialized")
+        fun get(): TodoRepository {
+            return INSTANCE ?:
+            throw IllegalStateException("TodoRepository must be initialized")
         }
     }
 }

@@ -3,9 +3,12 @@ package com.example.reminder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.Todo
 import com.example.reminder.viewmodel.TodoViewModel
@@ -17,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     lateinit var todoViewModel: TodoViewModel
+    lateinit var todoAdapter: TodoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,24 @@ class MainActivity : AppCompatActivity() {
             }
             requestActivity.launch(intent)
         }
+
+        todoViewModel.todoList.observe(this){
+            todoAdapter.update(it)
+        }
+
+        todoAdapter = TodoAdapter(this)
+        binding.rvTodoList.layoutManager = LinearLayoutManager(this)
+        binding.rvTodoList.adapter = todoAdapter
+
+        todoAdapter.setItemCheckBoxClickListener(object: TodoAdapter.ItemCheckBoxClickListener{
+            override fun onClick(view: View, position: Int, itemId: Long) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val todo = todoViewModel.getOne(itemId)
+                    todo.isChecked = !todo.isChecked
+                    todoViewModel.update(todo)
+                }
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

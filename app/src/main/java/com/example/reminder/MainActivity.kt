@@ -54,9 +54,9 @@ class MainActivity : AppCompatActivity() {
         todoAdapter.setItemCheckBoxClickListener(object: TodoAdapter.ItemCheckBoxClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val todo = todoViewModel.getOne(itemId)
+                    /*val todo = todoViewModel.getOne(itemId)
                     todo.isChecked = !todo.isChecked
-                    todoViewModel.update(todo)
+                    todoViewModel.update(todo)*/
                 }
             }
         })
@@ -83,12 +83,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
             R.id.menu_item_delete -> {
-                Toast.makeText(this, "삭제", Toast.LENGTH_SHORT).show()
-                todoViewModel.todoList.value!!.forEach{
-                    if (it.isChecked){
-                        todoViewModel.delete(it)
-                    }
-                }
+//                Toast.makeText(this, "삭제", Toast.LENGTH_SHORT).show()
+//                todoViewModel.todoList.value!!.forEach{
+//                    if (it.isChecked){
+//                        todoViewModel.delete(it)
+//                    }
+//                }
                 return true
             }
         }

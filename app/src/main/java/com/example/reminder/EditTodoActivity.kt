@@ -3,7 +3,6 @@ package com.example.reminder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.example.reminder.databinding.ActivityEditTodoBinding
 import com.example.reminder.dto.Todo
 import java.text.SimpleDateFormat
@@ -25,18 +24,21 @@ class EditTodoActivity : AppCompatActivity() {
         } else {
             todo = intent.getSerializableExtra("item") as Todo?
             binding.etTodoTitle.setText(todo!!.title)
+            binding.etTodoRepeat.setText(todo!!.repeat)
             binding.etTodoContent.setText(todo!!.content)
             binding.btnSave.text = "수정하기"
         }
 
         binding.btnSave.setOnClickListener{
             val title = binding.etTodoTitle.text.toString()
+            val startedAt = binding.etTodoStartedAt.text.toString();
+            val repeat = binding.etTodoRepeat.text.toString().toInt()
             val content = binding.etTodoContent.text.toString()
-            val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
+            val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
 
             if(type.equals("ADD")){
-                if(title.isNotEmpty() && content.isNotEmpty()){
-                    val todo = Todo(0, title, content, currentDate, false)
+                if(title.isNotEmpty() && repeat > 0 && repeat != null && content.isNotEmpty()){
+                    val todo = Todo(0, title, startedAt, repeat, content, 0, createdAt)
                     val intent = Intent().apply {
                         putExtra("todo", todo)
                         putExtra("flag", 0)
@@ -46,7 +48,7 @@ class EditTodoActivity : AppCompatActivity() {
                 }
             } else {
                 if (title.isNotEmpty() && content.isNotEmpty()){
-                    val todo = Todo(todo!!.id, title, content, currentDate, todo!!.isChecked)
+                    val todo = Todo(todo!!.id, title, startedAt, repeat, content, todo!!.delay, todo!!.created_at)
                     val intent = Intent().apply {
                         putExtra("todo", todo)
                         putExtra("flag", 1)

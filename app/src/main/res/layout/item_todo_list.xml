@@ -12,13 +12,13 @@
         android:text="todo"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvTimeStamp"
+        app:layout_constraintBottom_toTopOf="@+id/tvCreatedAt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cbCheck"
         />
 
     <TextView
-        android:id="@+id/tvTimeStamp"
+        android:id="@+id/tvCreatedAt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TimeStamp"

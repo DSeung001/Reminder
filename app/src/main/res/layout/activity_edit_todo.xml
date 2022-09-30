@@ -13,35 +13,61 @@
         android:layout_height="wrap_content"
         android:hint="제목을 입력해주세요."
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/etTodoContent"
+        app:layout_constraintBottom_toTopOf="@id/etTodoStartedAt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
     <EditText
+        android:id="@+id/etTodoStartedAt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="시작일을 선택해주세요."
+        android:inputType="time"
+        app:layout_constraintTop_toBottomOf="@id/etTodoTitle"
+        app:layout_constraintBottom_toTopOf="@id/etTodoRepeat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+<!-- 버튼으로 datepicker, textview를 활용해서 input hidden으로 -->
+<!--    https://androman.tistory.com/95 -->
+    <EditText
+        android:id="@+id/etTodoRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="주기를 입력해주세요."
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/etTodoStartedAt"
+        app:layout_constraintBottom_toTopOf="@id/etTodoRepeat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
         android:id="@+id/etTodoContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:hint="내용을 입력해주세요."
-        app:layout_constraintTop_toBottomOf="@id/etTodoTitle"
-        app:layout_constraintBottom_toTopOf="@id/btnSave"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:gravity="start|top"
+        android:hint="내용을 입력해주세요."
         android:inputType="textMultiLine"
-        android:singleLine="false" />
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@id/btnSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTodoRepeat" />
 
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
         android:text="저장"
         android:textAllCaps="false"
-        app:layout_constraintTop_toBottomOf="@id/etTodoContent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTodoContent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,8 @@ package com.example.reminder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -66,6 +68,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_option, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.menu_item_delete -> {
+                Toast.makeText(this, "삭제", Toast.LENGTH_SHORT).show()
+                todoViewModel.todoList.value!!.forEach{
+                    if (it.isChecked){
+                        todoViewModel.delete(it)
+                    }
+                }
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

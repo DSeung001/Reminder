@@ -15,6 +15,7 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
 
     private var list = mutableListOf<Todo>()
     private lateinit var itemCheckBoxClickListener: ItemCheckBoxClickListener
+    private lateinit var itemClickListener: ItemClickListener
 
     inner class TodoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
@@ -35,6 +36,9 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
             checkbox.setOnClickListener{
                 itemCheckBoxClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }
+            itemView.setOnClickListener{
+                itemClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
+            }
         }
     }
 
@@ -42,11 +46,9 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_todo_list, parent, false)
         return TodoViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int){
         holder.onBind(list[position])
     }
-
     override fun getItemCount(): Int {
         return list.size
     }
@@ -59,8 +61,14 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
     interface ItemCheckBoxClickListener{
         fun onClick(view: View, position: Int, itemId: Long)
     }
+    interface ItemClickListener{
+        fun onClick(view: View, position: Int, itemId: Long)
+    }
 
     fun setItemCheckBoxClickListener(itemCheckBoxClickListener: ItemCheckBoxClickListener) {
         this.itemCheckBoxClickListener = itemCheckBoxClickListener
+    }
+    fun setItemClickListener(itemClickListener: ItemClickListener){
+        this.itemClickListener = itemClickListener
     }
 }

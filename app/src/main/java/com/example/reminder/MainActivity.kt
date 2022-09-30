@@ -53,6 +53,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+        todoAdapter.setItemClickListener(object: TodoAdapter.ItemClickListener{
+            override fun onClick(view: View, position: Int, itemId: Long) {
+                Toast.makeText(this@MainActivity, "$itemId", Toast.LENGTH_SHORT).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val todo = todoViewModel.getOne(itemId)
+                    val intent = Intent(this@MainActivity, EditTodoActivity::class.java).apply {
+                        putExtra("type", "EDIT")
+                        putExtra("item", todo)
+                    }
+                    requestActivity.launch(intent)
+                }
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -65,6 +78,12 @@ class MainActivity : AppCompatActivity() {
                         todoViewModel.insert(todo)
                     }
                     Toast.makeText(this, "추가되었습니다", Toast.LENGTH_SHORT).show()
+                }
+                1->{
+                    CoroutineScope(Dispatchers.IO).launch {
+                        todoViewModel.update(todo)
+                    }
+                    Toast.makeText(this, "수정되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

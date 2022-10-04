@@ -31,13 +31,14 @@ class MainActivity : AppCompatActivity() {
 
         todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
 
-        // fab
+        // fab, add
         binding.fabAdd.setOnClickListener{
             var intent = Intent(this, EditTodoActivity::class.java).apply {
                 putExtra("type", "ADD")
             }
             requestActivity.launch(intent)
         }
+        // fab, calendar
         binding.fabCalendar.setOnClickListener{
             var intent = Intent(this, CalendarActivity::class.java).apply {}
             requestActivity.launch(intent)

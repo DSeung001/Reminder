@@ -24,7 +24,7 @@ class EditTodoActivity : AppCompatActivity() {
         binding.btnTodoStartedAt.setOnClickListener{
             val cal = Calendar.getInstance()
             val dateSetListener = DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
-                val dateString = "${year}-${month+1}-${dayOfMonth}"
+                val dateString = "%d-%02d-%02d".format(year,month,dayOfMonth)
                 binding.btnTodoStartedAt.setText(dateString)
             }
             DatePickerDialog(this, dateSetListener, cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()

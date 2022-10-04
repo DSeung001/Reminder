@@ -1,11 +1,13 @@
 package com.example.reminder
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.reminder.databinding.ActivityEditTodoBinding
 import com.example.reminder.dto.Todo
 import java.text.SimpleDateFormat
+import java.util.*
 
 class EditTodoActivity : AppCompatActivity() {
     lateinit var binding: ActivityEditTodoBinding
@@ -19,6 +21,15 @@ class EditTodoActivity : AppCompatActivity() {
 
         val type = intent.getStringExtra("type")
 
+        binding.btnTodoStartedAt.setOnClickListener{
+            val cal = Calendar.getInstance()
+            val dateSetListener = DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
+                val dateString = "${year}-${month+1}-${dayOfMonth}"
+                binding.btnTodoStartedAt.setText(dateString)
+            }
+            DatePickerDialog(this, dateSetListener, cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
         if(type.equals("ADD")){
             binding.btnSave.text = "추가하기"
         } else {
@@ -31,7 +42,7 @@ class EditTodoActivity : AppCompatActivity() {
 
         binding.btnSave.setOnClickListener{
             val title = binding.etTodoTitle.text.toString()
-            val startedAt = binding.etTodoStartedAt.text.toString();
+            val startedAt = binding.btnTodoStartedAt.text.toString();
             val repeat = binding.etTodoRepeat.text.toString().toInt()
             val content = binding.etTodoContent.text.toString()
             val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())

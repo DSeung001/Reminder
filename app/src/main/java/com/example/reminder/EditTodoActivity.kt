@@ -35,7 +35,8 @@ class EditTodoActivity : AppCompatActivity() {
         } else {
             todo = intent.getSerializableExtra("item") as Todo?
             binding.etTodoTitle.setText(todo!!.title)
-            binding.etTodoRepeat.setText(todo!!.repeat)
+            binding.btnTodoStartedAt.setText(todo!!.started_at)
+            binding.etTodoRepeat.setText(todo!!.repeat.toString())
             binding.etTodoContent.setText(todo!!.content)
             binding.btnSave.text = "수정하기"
         }
@@ -48,7 +49,7 @@ class EditTodoActivity : AppCompatActivity() {
             val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
 
             if(type.equals("ADD")){
-                if(title.isNotEmpty() && repeat.isNotEmpty()  && content.isNotEmpty()){
+                if(title.isNotEmpty() && repeat.isNotEmpty() && repeat != "0" && content.isNotEmpty()){
                     val todo = Todo(0, title, startedAt, repeat.toInt(), content, 0, createdAt)
                     val intent = Intent().apply {
                         putExtra("todo", todo)
@@ -58,7 +59,7 @@ class EditTodoActivity : AppCompatActivity() {
                     finish()
                 }
             } else {
-                if (title.isNotEmpty() && content.isNotEmpty()){
+                if(title.isNotEmpty() && repeat.isNotEmpty() && repeat != "0" && content.isNotEmpty()){
                     val todo = Todo(todo!!.id, title, startedAt, repeat.toInt(), content, todo!!.delay, todo!!.created_at)
                     val intent = Intent().apply {
                         putExtra("todo", todo)

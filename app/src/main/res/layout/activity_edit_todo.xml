@@ -36,7 +36,7 @@
         android:id="@+id/etTodoRepeat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="주기를 입력해주세요."
+        android:hint="주기를 입력해주세요.(0은 안됩니다.)"
         android:inputType="numberDecimal"
         app:layout_constraintTop_toBottomOf="@id/btnTodoStartedAt"
         app:layout_constraintBottom_toTopOf="@id/etTodoRepeat"

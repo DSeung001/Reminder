@@ -16,7 +16,7 @@ class HistoryRepository private constructor(context: Context){
 
     private val historyDao = database.historyDao()
 
-    fun getHistoryByTodo(todo_id: Long, setting_on:String): History = historyDao.selectByTodo(todo_id,setting_on)
+//    fun getHistoryByTodo(todo_id: Long, setting_on:String): History = historyDao.selectByTodo(todo_id,setting_on)
 
     fun insert(dto: History) = historyDao.insert(dto)
 

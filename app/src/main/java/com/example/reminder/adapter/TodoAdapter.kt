@@ -42,13 +42,16 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
         }
     }
 
+    // item을 가져와서 inflate를 해줌
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_todo_list, parent, false)
         return TodoViewHolder(view)
     }
+    // onCreateViewHolder에서 가져와서 view에 실제 데이터 연결
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int){
         holder.onBind(list[position])
     }
+    // item의 총 갯수
     override fun getItemCount(): Int {
         return list.size
     }

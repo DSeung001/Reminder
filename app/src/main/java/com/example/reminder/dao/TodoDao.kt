@@ -14,7 +14,7 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dto: Todo)
 
-    @Query("select * from todoTable")
+    @Query("select * from todoTable where Cast((JulianDay('2022-10-05') - JulianDay( date('now'))) As Integer) % repeat = 0")
     fun list(): LiveData<MutableList<Todo>>
 
     @Query("select * from todoTable where id = (:id)")

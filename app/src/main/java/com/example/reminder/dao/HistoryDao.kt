@@ -13,8 +13,8 @@ interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dto: History)
 
-    @Query("select * from historyTable where id = (:todo_id) and setting_on = (:setting_on)")
-    fun selectByTodo(todo_id: Long, setting_on: String): History
+//    @Query("select * from historyTable where id = (:todo_id) and setting_on = (:setting_on)")
+//    fun selectByTodo(todo_id: Long, setting_on: String): History
 
     @Update
     fun update(dto: History)

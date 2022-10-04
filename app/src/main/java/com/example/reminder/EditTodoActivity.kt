@@ -43,13 +43,13 @@ class EditTodoActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener{
             val title = binding.etTodoTitle.text.toString()
             val startedAt = binding.btnTodoStartedAt.text.toString();
-            val repeat = binding.etTodoRepeat.text.toString().toInt()
+            val repeat = binding.etTodoRepeat.text.toString()
             val content = binding.etTodoContent.text.toString()
             val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
 
             if(type.equals("ADD")){
-                if(title.isNotEmpty() && repeat > 0 && repeat != null && content.isNotEmpty()){
-                    val todo = Todo(0, title, startedAt, repeat, content, 0, createdAt)
+                if(title.isNotEmpty() && repeat.isNotEmpty()  && content.isNotEmpty()){
+                    val todo = Todo(0, title, startedAt, repeat.toInt(), content, 0, createdAt)
                     val intent = Intent().apply {
                         putExtra("todo", todo)
                         putExtra("flag", 0)
@@ -59,7 +59,7 @@ class EditTodoActivity : AppCompatActivity() {
                 }
             } else {
                 if (title.isNotEmpty() && content.isNotEmpty()){
-                    val todo = Todo(todo!!.id, title, startedAt, repeat, content, todo!!.delay, todo!!.created_at)
+                    val todo = Todo(todo!!.id, title, startedAt, repeat.toInt(), content, todo!!.delay, todo!!.created_at)
                     val intent = Intent().apply {
                         putExtra("todo", todo)
                         putExtra("flag", 1)

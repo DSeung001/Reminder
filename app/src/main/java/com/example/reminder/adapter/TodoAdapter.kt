@@ -24,7 +24,7 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
 
         fun onBind(data:Todo){
             title.text = data.title
-            createdAt.text = data.created_at
+            createdAt.text = "반복 주기 : "+data.repeat.toString()
 //            checkbox.isChecked = data.isChecked
 
 //            if (data.isChecked){

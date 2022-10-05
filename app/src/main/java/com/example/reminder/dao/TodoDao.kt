@@ -14,10 +14,15 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dto: Todo)
 
-    @Query("select * from todoTable where Cast((JulianDay('2022-10-05') - JulianDay( date('now'))) As Integer) % repeat = 0")
+    @Query("" +
+            "SELECT id, title, started_at, repeat, content, delay, created_at, JulianDay( date('now')) AS num_now, JulianDay(started_at) AS num_started_at " +
+            "FROM todoTable " +
+            "WHERE num_now >= num_started_at " +
+            "AND Cast((num_now - num_started_at) As Integer) % repeat = 0 " +
+            "AND (num_now == num_started_at AND repeat != 1) != 1 ")
     fun list(): LiveData<MutableList<Todo>>
 
-    @Query("select * from todoTable where id = (:id)")
+    @Query("SELECT * FROM todoTable WHERE id = (:id)")
     fun selectOne(id: Long): Todo
 
     @Update

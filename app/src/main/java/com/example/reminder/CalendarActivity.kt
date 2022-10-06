@@ -1,23 +1,43 @@
 package com.example.reminder
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityCalendarBinding
+import com.example.reminder.dto.Todo
+import com.example.reminder.viewmodel.TodoViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CalendarActivity : AppCompatActivity() {
+
     lateinit var binding: ActivityCalendarBinding
+    lateinit var todoViewModel: TodoViewModel
+    lateinit var todoAdapter: TodoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.calendarView.setOnDateChangeListener { view, year, month, day ->
-            // 기존 메인에서 보여주던 쿼리문에서 date만 바꾸는 형식으로 해서 뿌려주면 될듯
-            // 1. 기존 쿼리에서 파라미터 받는 형식 , 2. 신규 쿼리 작성
-            Toast.makeText(this, String.format("%d /%d / %d", year, month+1, day), Toast.LENGTH_SHORT).show()
+        todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
+        todoViewModel.todoList.observe(this){
+            todoAdapter.update(it)
         }
 
+        todoAdapter = TodoAdapter(this)
+        binding.rvTodoList.layoutManager = LinearLayoutManager(this)
+        binding.rvTodoList.adapter = todoAdapter
     }
+
+
 }

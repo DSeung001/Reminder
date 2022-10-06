@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         })
         todoAdapter.setItemClickListener(object: TodoAdapter.ItemClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
-                Toast.makeText(this@MainActivity, "$itemId", Toast.LENGTH_SHORT).show()
                 CoroutineScope(Dispatchers.IO).launch {
                     val todo = todoViewModel.getOne(itemId)
                     val intent = Intent(this@MainActivity, EditTodoActivity::class.java).apply {

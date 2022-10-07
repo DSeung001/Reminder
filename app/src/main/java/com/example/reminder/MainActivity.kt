@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.Todo
+import com.example.reminder.factory.ViewModelFactory
 import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
+        todoViewModel = ViewModelProvider(this, ViewModelFactory(null)).get(TodoViewModel::class.java)
 
         // fab, add
         binding.fabAdd.setOnClickListener{

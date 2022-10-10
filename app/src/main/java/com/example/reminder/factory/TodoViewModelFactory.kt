@@ -10,6 +10,6 @@ class TodoViewModelFactory(
     ) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T: ViewModel> create(modelClass:Class<T>): T {
-        return TodoViewModel() as T
+        return TodoViewModel(date) as T
     }
 }

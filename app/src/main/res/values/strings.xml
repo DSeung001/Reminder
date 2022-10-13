@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Reminder</string>
+    <string name="recycleEmpty">오늘은 쉬는 날</string>
 </resources>

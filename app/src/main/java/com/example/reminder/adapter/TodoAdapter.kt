@@ -53,6 +53,8 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
     }
     // item의 총 갯수
     override fun getItemCount(): Int {
+        if(list == null)
+            return  0
         return list.size
     }
 

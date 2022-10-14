@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
 
         todoViewModel.todoList.observe(this){
             todoAdapter.update(it)
+            if(it.size > 0){
+                binding.rvTodoList.visibility=View.VISIBLE
+                binding.tvRecycleEmpty.visibility=View.INVISIBLE
+            }
         }
 
         todoAdapter = TodoAdapter(this)
@@ -74,13 +78,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
-        Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
-        // recyclerview count check
-        if(todoAdapter.itemCount > 0){
-            binding.rvTodoList.visibility=View.VISIBLE
-            binding.tvRecycleEmpty.visibility=View.INVISIBLE
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -17,17 +17,14 @@ class CalendarAdapter(val context: Context):RecyclerView.Adapter<CalendarAdapter
 
     inner class CalendarViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
-        var createdAt = itemView.findViewById<TextView>(R.id.tvCreatedAt)
-        var checkbox = itemView.findViewById<CheckBox>(R.id.cbCheck)
 
         fun onBind(data:Todo){
             title.text = data.title
-            createdAt.text = "반복 주기 : "+data.repeat.toString()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_todo_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar_list, parent, false)
         return CalendarViewHolder(view)
     }
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int){
@@ -36,7 +33,9 @@ class CalendarAdapter(val context: Context):RecyclerView.Adapter<CalendarAdapter
     override fun getItemCount(): Int {
         return list.size
     }
-//    override fun onBindViewHolder(holder: CalendarAdapter, position: Int) {
-//        holder.onBind(list[position])
-//    }
+
+    fun update(newList: MutableList<Todo>){
+        this.list = newList
+        notifyDataSetChanged()
+    }
 }

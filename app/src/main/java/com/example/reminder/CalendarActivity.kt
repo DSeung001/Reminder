@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.reminder.adapter.TodoAdapter
+import com.example.reminder.adapter.CalendarAdapter
 import com.example.reminder.databinding.ActivityCalendarBinding
 import com.example.reminder.factory.ViewModelFactory
 import com.example.reminder.viewmodel.TodoViewModel
@@ -15,7 +15,7 @@ class CalendarActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCalendarBinding
     lateinit var todoViewModel: TodoViewModel
-    lateinit var todoAdapter: TodoAdapter
+    lateinit var calendarAdapter: CalendarAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +31,12 @@ class CalendarActivity : AppCompatActivity() {
         todoViewModel = ViewModelProvider(this, ViewModelFactory(date)).get(TodoViewModel::class.java)
 
         todoViewModel.todoList.observe(this){
-            todoAdapter.update(it)
+            calendarAdapter.update(it)
         }
 
-        todoAdapter = TodoAdapter(this)
+        calendarAdapter = CalendarAdapter(this)
         binding.rvTodoList.layoutManager = LinearLayoutManager(this)
-        binding.rvTodoList.adapter = todoAdapter
+        binding.rvTodoList.adapter = calendarAdapter
 
         binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             var date = String.format("%d-%d-%d", year, month+1, dayOfMonth)
@@ -54,8 +54,5 @@ class CalendarActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
 
         }
-
     }
-
-
 }

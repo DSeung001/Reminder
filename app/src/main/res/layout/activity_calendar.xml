@@ -25,6 +25,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/calendarView"
         tools:layout_editor_absoluteX="1dp"
-        tools:listitem="@layout/item_todo_list" />
+        tools:listitem="@layout/item_calendar_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,23 +19,9 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
 
     inner class TodoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
-        var createdAt = itemView.findViewById<TextView>(R.id.tvCreatedAt)
-        var checkbox = itemView.findViewById<CheckBox>(R.id.cbCheck)
 
         fun onBind(data:Todo){
             title.text = data.title
-            createdAt.text = "반복 주기 : "+data.repeat.toString()
-//            checkbox.isChecked = data.isChecked
-
-//            if (data.isChecked){
-//                title.paintFlags = title.paintFlags or STRIKE_THRU_TEXT_FLAG
-//            } else {
-//                title.paintFlags = title.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()
-//            }
-
-//            checkbox.setOnClickListener{
-//                itemCheckBoxClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
-//            }
             itemView.setOnClickListener{
                 itemClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }

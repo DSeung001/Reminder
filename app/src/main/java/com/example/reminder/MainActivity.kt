@@ -1,28 +1,35 @@
 package com.example.reminder
 
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
+import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
 import com.example.reminder.factory.ViewModelFactory
+import com.example.reminder.viewmodel.HistoryViewModel
 import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     lateinit var todoViewModel: TodoViewModel
+    lateinit var historyViewModel: HistoryViewModel
     lateinit var todoAdapter: TodoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         todoViewModel = ViewModelProvider(this, ViewModelFactory(null)).get(TodoViewModel::class.java)
+        historyViewModel =  ViewModelProvider(this)[HistoryViewModel::class.java]
 
         // fab, add
         binding.fabAdd.setOnClickListener{
@@ -75,6 +83,24 @@ class MainActivity : AppCompatActivity() {
                         putExtra("item", todo)
                     }
                     requestActivity.launch(intent)
+                }
+            }
+        })
+        todoAdapter.setItemBtnClearClickListener(object: TodoAdapter.ItemBtnClerClickListener{
+            override fun onClick(view: View, position: Int, itemId: Long) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val date = LocalDate.now().toString()
+                    var history = historyViewModel.getOne(itemId, date)
+                    if (history == null) {
+                        historyViewModel.insert(History(0, itemId, true, date))
+                    }
+                }
+            }
+        })
+        todoAdapter.setItemBtnDelayClickListener(object: TodoAdapter.ItemBtnDelayClickListener{
+            override fun onClick(view: View, position: Int, itemId: Long) {
+                CoroutineScope(Dispatchers.IO).launch {
+//                    Toast.makeText(intent, "test.", Toast.LENGTH_SHORT).show()
                 }
             }
         })

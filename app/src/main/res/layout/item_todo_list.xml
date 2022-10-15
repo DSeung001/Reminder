@@ -12,13 +12,11 @@
         android:layout_height="wrap_content"
         android:text="todo"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvCreatedAt"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnClear"
+        android:id="@+id/btnDelay"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:text="미루기"
@@ -29,7 +27,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/btnClear2"
+        android:id="@+id/btnClear"
         android:layout_width="wrap_content"
         android:layout_height="42dp"
         android:text="완료"
@@ -41,13 +39,15 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTodoItem" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/btnClear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_clear" />
+        app:srcCompat="@drawable/ic_clear"
+        android:visibility="invisible"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.reminder.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import com.example.reminder.dao.TodoDao
 import com.example.reminder.database.TodoDatabase
 import com.example.reminder.dto.Todo
 
@@ -18,9 +19,9 @@ class TodoRepository private constructor(context: Context){
 
     private val todoDao = database.todoDao()
 
-    fun list(): LiveData<MutableList<Todo>> = todoDao.list()
+    fun list(): LiveData<MutableList<TodoDao.TodoHistory>> = todoDao.list()
 
-    fun listOnDate(selectOnDate:String): LiveData<MutableList<Todo>> = todoDao.listOnDate(selectOnDate)
+    fun listOnDate(selectOnDate:String): LiveData<MutableList<TodoDao.TodoHistory>> = todoDao.listOnDate(selectOnDate)
 
     fun getTodo(id: Long): Todo = todoDao.selectOne(id)
 

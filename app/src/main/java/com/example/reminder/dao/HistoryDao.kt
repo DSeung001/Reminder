@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.reminder.dto.History
-import com.example.reminder.dto.Todo
 
 @Dao
 interface HistoryDao {

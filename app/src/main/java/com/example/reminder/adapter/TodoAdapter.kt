@@ -10,12 +10,13 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminder.R
+import com.example.reminder.dao.TodoDao
 import com.example.reminder.dto.Todo
 import com.example.reminder.viewmodel.HistoryViewModel
 
 class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
-    private var list = mutableListOf<Todo>()
+    private var list = mutableListOf<TodoDao.TodoHistory>()
     private lateinit var itemCheckBoxClickListener: ItemCheckBoxClickListener
     private lateinit var itemClickListener: ItemClickListener
     private lateinit var itemBtnClerClickListener: ItemBtnClerClickListener
@@ -30,14 +31,14 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
         var btnDelay = itemView.findViewById<Button>(R.id.btnDelay)
         var imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
 
-        fun onBind(data: Todo){
+        fun onBind(data: TodoDao.TodoHistory){
             title.text = data.title
             itemView.setOnClickListener{
                 itemClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }
-//            if(data.result == true){
-//                imgClear.visibility = View.VISIBLE
-//            }
+            if(data.result == true){
+                imgClear.visibility = View.VISIBLE
+            }
             btnClear.setOnClickListener{
                 if(imgClear.isVisible){
                     //delete해야함
@@ -69,7 +70,7 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
         return list.size
     }
 
-    fun update(newList: MutableList<Todo>){
+    fun update(newList: MutableList<TodoDao.TodoHistory>){
         this.list = newList
         notifyDataSetChanged()
     }

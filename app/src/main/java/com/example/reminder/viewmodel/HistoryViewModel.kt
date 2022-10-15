@@ -22,5 +22,5 @@ class HistoryViewModel : ViewModel() {
         historyRepository.delete(dto)
     }
 
-    fun getOne(todoId: Long, settingOn: String) = historyRepository.getHistory(todoId, settingOn)
+    fun getHistory(todoId: Long, settingOn: String) = historyRepository.getHistory(todoId, settingOn)
 }

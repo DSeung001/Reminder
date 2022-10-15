@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val date = LocalDate.now().toString()
-                    var history = historyViewModel.getOne(itemId, date)
+                    var history = historyViewModel.getHistory(itemId, date)
                     if (history == null) {
                         historyViewModel.insert(History(0, itemId, true, date))
                     }

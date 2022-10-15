@@ -3,13 +3,14 @@ package com.example.reminder.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.reminder.dao.TodoDao
 import com.example.reminder.dto.Todo
 import com.example.reminder.repository.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TodoViewModel(date: String?) : ViewModel() {
-    val todoList: LiveData<MutableList<Todo>>
+    val todoList: LiveData<MutableList<TodoDao.TodoHistory>>
     private val todoRepository: TodoRepository = TodoRepository.get()
 
     init {

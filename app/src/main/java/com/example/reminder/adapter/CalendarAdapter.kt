@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminder.R
@@ -18,9 +19,13 @@ class CalendarAdapter(val context: Context):RecyclerView.Adapter<CalendarAdapter
 
     inner class CalendarViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
+        var imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
 
         fun onBind(data:TodoDao.TodoHistory){
             title.text = data.title
+            if(data.result == true){
+                imgClear.visibility = View.VISIBLE
+            }
         }
     }
 

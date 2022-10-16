@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminder.R
 import com.example.reminder.dao.TodoDao
-import com.example.reminder.dto.Todo
 import com.example.reminder.viewmodel.HistoryViewModel
 
 class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
@@ -42,17 +40,20 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
                 imgClear.visibility = View.VISIBLE
                 btnClearCancel.visibility = View.VISIBLE
                 btnClear.visibility = View.INVISIBLE
+                btnDelay.visibility = View.INVISIBLE
             }
             btnClearCancel.setOnClickListener {
                 imgClear.visibility = View.INVISIBLE
                 btnClearCancel.visibility = View.INVISIBLE
                 btnClear.visibility = View.VISIBLE
+                btnDelay.visibility = View.VISIBLE
                 itemBtnClearCancelClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }
             btnClear.setOnClickListener{
                 imgClear.visibility = View.VISIBLE
                 btnClearCancel.visibility = View.VISIBLE
                 btnClear.visibility = View.INVISIBLE
+                btnDelay.visibility = View.INVISIBLE
                 itemBtnClearClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }
             btnDelay.setOnClickListener {

@@ -24,11 +24,24 @@ interface TodoDao {
             "AND (num_now == num_started_at AND repeat != 1) != 1 ")
     fun list(): LiveData<MutableList<TodoHistory>>
 
-    data class TodoHistory(val id: Long, val title:String, val started_at:String, val repeat:Int, val content:String?, val delay:Int, val result:Boolean?, val created_at:String)
+    data class TodoHistory(
+        val id: Long,
+        val title: String,
+        val started_at: String,
+        val repeat: Int,
+        val content: String?,
+        val delay: Int,
+        val result: Boolean?,
+        val created_at: String,
+        val num_now: Int,
+        val num_started_at:Int
+    )
 
     @Query("" +
-            "SELECT id, title, started_at, repeat, content, delay, created_at, JulianDay((:selectOnDate)) AS num_now, JulianDay(started_at) AS num_started_at " +
-            "FROM todoTable " +
+            "SELECT td.id, title, started_at, repeat, content, delay, result, created_at, JulianDay((:selectOnDate)) AS num_now, JulianDay(started_at) AS num_started_at " +
+            "FROM todoTable AS td " +
+            "LEFT JOIN historyTable ON todo_id = td.id " +
+            "AND setting_on = (:selectOnDate) " +
             "WHERE num_now >= num_started_at " +
             "AND Cast((num_now - num_started_at) As Integer) % repeat = 0 " +
             "AND (num_now == num_started_at AND repeat != 1) != 1 ")

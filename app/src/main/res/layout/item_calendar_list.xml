@@ -4,17 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:background="@drawable/item_background"
+    >
 
     <TextView
+        android:layout_margin="10dp"
         android:id="@+id/tvTodoItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="49dp"
         android:text="todo"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+
+    <ImageView
+        android:id="@+id/imgClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="14dp"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_clear"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,5 +13,6 @@ class Todo(
     @ColumnInfo(name = "content") val content:String, // 내용
     @ColumnInfo(name = "delay") var delay: Int, // 미룬 횟수
     @ColumnInfo(name = "created_at") val created_at: String, // 생성일, 수정일
+    @ColumnInfo(name = "expired_at") val expired_at: String?, // 만료일, 미루기 기능시 현재 날짜로 만료 됨
     ): java.io.Serializable{
 }

@@ -2,16 +2,14 @@ package com.example.reminder
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminder.adapter.TodoAdapter
@@ -115,11 +113,42 @@ class MainActivity : AppCompatActivity() {
                     .setMessage("해당 일의 모든 일정이 하루 미뤄집니다.\n정말로 미루겠습니까?")
                     .setPositiveButton("미루기",
                         DialogInterface.OnClickListener{ dialog, which ->
-                            Toast.makeText(this@MainActivity, "확인", Toast.LENGTH_SHORT).show()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val todo = todoViewModel.getOne(itemId)
+                                val newTodo = Todo(
+                                    0,
+                                    todo!!.title,
+                                    LocalDate.now().plusDays(2).minusDays(todo!!.repeat.toLong()).toString(),
+                                    todo!!.repeat,
+                                    todo!!.content,
+                                    todo!!.delay+1,
+                                    java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis()),
+                                    null
+                                )
+                                val updateTodo = Todo(
+                                    todo!!.id,
+                                    todo!!.title,
+                                    todo!!.started_at,
+                                    todo!!.repeat,
+                                    todo!!.content,
+                                    todo!!.delay,
+                                    todo!!.created_at,
+                                    java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),
+                                )
+                                todoViewModel.insert(newTodo)
+                                todoViewModel.update(updateTodo)
+                            }
+                            finish() //인텐트 종료
+
+                            overridePendingTransition(0, 0)
+                            val newIntent = Intent(this@MainActivity, MainActivity::class.java)
+                            startActivity(newIntent)
+                            overridePendingTransition(0, 0) //인텐트 효과 없애기
+                            Toast.makeText(this@MainActivity, "미뤄졌습니다.", Toast.LENGTH_SHORT).show()
                         })
                     .setNegativeButton("안 미루기",
                         DialogInterface.OnClickListener { dialog, which ->
-                            Toast.makeText(this@MainActivity, "취소", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "잘했습니다.", Toast.LENGTH_SHORT).show()
                         })
                 builder.show()
             }

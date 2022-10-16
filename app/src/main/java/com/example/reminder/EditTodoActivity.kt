@@ -50,30 +50,32 @@ class EditTodoActivity : AppCompatActivity() {
             val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
 
             if(type.equals("ADD")){
-                if(title.isNotEmpty() && repeat.isNotEmpty() && content.isNotEmpty()){
-                    if(repeat == "0" ){
-                        Toast.makeText(this, "0을 주기로 할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                if(repeat == "0" ){
+                    Toast.makeText(this, "0을 주기로 할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else{
+                    if(title.isNotEmpty() && repeat.isNotEmpty() && content.isNotEmpty()){
+                        val todo = Todo(0, title, startedAt, repeat.toInt(), content, 0, createdAt, null)
+                        val intent = Intent().apply {
+                            putExtra("todo", todo)
+                            putExtra("flag", 0)
+                        }
+                        setResult(RESULT_OK, intent)
+                        finish()
                     }
-                    val todo = Todo(0, title, startedAt, repeat.toInt(), content, 0, createdAt)
-                    val intent = Intent().apply {
-                        putExtra("todo", todo)
-                        putExtra("flag", 0)
-                    }
-                    setResult(RESULT_OK, intent)
-                    finish()
                 }
             } else {
                 if(title.isNotEmpty() && repeat.isNotEmpty() && content.isNotEmpty()){
                     if(repeat == "0" ){
                         Toast.makeText(this, "0을 주기로 할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else{
+                        val todo = Todo(todo!!.id, title, startedAt, repeat.toInt(), content, todo!!.delay, todo!!.created_at, todo!!.expired_at)
+                        val intent = Intent().apply {
+                            putExtra("todo", todo)
+                            putExtra("flag", 1)
+                        }
+                        setResult(RESULT_OK, intent)
+                        finish()
                     }
-                    val todo = Todo(todo!!.id, title, startedAt, repeat.toInt(), content, todo!!.delay, todo!!.created_at)
-                    val intent = Intent().apply {
-                        putExtra("todo", todo)
-                        putExtra("flag", 1)
-                    }
-                    setResult(RESULT_OK, intent)
-                    finish()
                 }
             }
         }

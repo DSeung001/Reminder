@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-        todoAdapter.setItemBtnClearClickListener(object: TodoAdapter.ItemBtnClerClickListener{
+        todoAdapter.setItemBtnClearClickListener(object: TodoAdapter.ItemBtnClearClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val date = LocalDate.now().toString()
@@ -97,10 +97,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+        todoAdapter.setItemBtnClearCancelClickListener(object: TodoAdapter.ItemBtnClearCancelClickListener{
+            override fun onClick(view: View, position: Int, itemId: Long) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val date = LocalDate.now().toString()
+                    var history = historyViewModel.getHistory(itemId, date)
+                    historyViewModel.delete(history)
+                }
+            }
+        })
         todoAdapter.setItemBtnDelayClickListener(object: TodoAdapter.ItemBtnDelayClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-//                    Toast.makeText(intent, "test.", Toast.LENGTH_SHORT).show()
+                    // confirm 으로 체크 후 미루기 기능 delay 추가 1
                 }
             }
         })

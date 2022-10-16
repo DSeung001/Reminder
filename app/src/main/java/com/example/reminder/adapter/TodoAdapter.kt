@@ -19,7 +19,8 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
     private var list = mutableListOf<TodoDao.TodoHistory>()
     private lateinit var itemCheckBoxClickListener: ItemCheckBoxClickListener
     private lateinit var itemClickListener: ItemClickListener
-    private lateinit var itemBtnClerClickListener: ItemBtnClerClickListener
+    private lateinit var itemBtnClearClickListener: ItemBtnClearClickListener
+    private lateinit var itemBtnClearCancelClickListener: ItemBtnClearCancelClickListener
     private lateinit var itemBtnDelayClickListener: ItemBtnDelayClickListener
 
     lateinit var historyViewModel: HistoryViewModel
@@ -28,6 +29,7 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
 
         var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
         var btnClear = itemView.findViewById<Button>(R.id.btnClear)
+        var btnClearCancel = itemView.findViewById<Button>(R.id.btnClearCancel)
         var btnDelay = itemView.findViewById<Button>(R.id.btnDelay)
         var imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
 
@@ -38,15 +40,20 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
             }
             if(data.result == true){
                 imgClear.visibility = View.VISIBLE
+                btnClearCancel.visibility = View.VISIBLE
+                btnClear.visibility = View.INVISIBLE
+            }
+            btnClearCancel.setOnClickListener {
+                imgClear.visibility = View.INVISIBLE
+                btnClearCancel.visibility = View.INVISIBLE
+                btnClear.visibility = View.VISIBLE
+                itemBtnClearCancelClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }
             btnClear.setOnClickListener{
-                if(imgClear.isVisible){
-                    //delete해야함
-                    imgClear.visibility = View.INVISIBLE
-                }else{
-                    imgClear.visibility = View.VISIBLE
-                }
-                itemBtnClerClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
+                imgClear.visibility = View.VISIBLE
+                btnClearCancel.visibility = View.VISIBLE
+                btnClear.visibility = View.INVISIBLE
+                itemBtnClearClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
             }
             btnDelay.setOnClickListener {
                 itemBtnDelayClickListener.onClick(it, layoutPosition, list[layoutPosition].id)
@@ -81,7 +88,10 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
     interface ItemClickListener{
         fun onClick(view: View, position: Int, itemId: Long)
     }
-    interface ItemBtnClerClickListener{
+    interface ItemBtnClearClickListener{
+        fun onClick(view: View, position: Int, itemId: Long)
+    }
+    interface ItemBtnClearCancelClickListener{
         fun onClick(view: View, position: Int, itemId: Long)
     }
     interface ItemBtnDelayClickListener{
@@ -94,8 +104,11 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
     fun setItemClickListener(itemClickListener: ItemClickListener){
         this.itemClickListener = itemClickListener
     }
-    fun setItemBtnClearClickListener(itemBtnClerClickListener: ItemBtnClerClickListener){
-        this.itemBtnClerClickListener = itemBtnClerClickListener
+    fun setItemBtnClearClickListener(itemBtnClearClickListener: ItemBtnClearClickListener){
+        this.itemBtnClearClickListener = itemBtnClearClickListener
+    }
+    fun setItemBtnClearCancelClickListener(itemBtnClearCancelClickListener: ItemBtnClearCancelClickListener){
+        this.itemBtnClearCancelClickListener = itemBtnClearCancelClickListener
     }
     fun setItemBtnDelayClickListener(itemBtnDelayClickListener: ItemBtnDelayClickListener){
         this.itemBtnDelayClickListener = itemBtnDelayClickListener

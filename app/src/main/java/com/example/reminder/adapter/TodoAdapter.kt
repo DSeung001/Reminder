@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminder.R
 import com.example.reminder.dao.TodoDao
-import com.example.reminder.viewmodel.HistoryViewModel
 
 class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
@@ -20,8 +19,6 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
     private lateinit var itemBtnClearClickListener: ItemBtnClearClickListener
     private lateinit var itemBtnClearCancelClickListener: ItemBtnClearCancelClickListener
     private lateinit var itemBtnDelayClickListener: ItemBtnDelayClickListener
-
-    lateinit var historyViewModel: HistoryViewModel
 
     inner class TodoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 

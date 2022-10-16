@@ -1,5 +1,6 @@
 package com.example.reminder
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminder.adapter.TodoAdapter
@@ -108,9 +110,18 @@ class MainActivity : AppCompatActivity() {
         })
         todoAdapter.setItemBtnDelayClickListener(object: TodoAdapter.ItemBtnDelayClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    // confirm 으로 체크 후 미루기 기능 delay 추가 1
-                }
+                val builder = AlertDialog.Builder(this@MainActivity)
+                    .setTitle("할 일 미루기")
+                    .setMessage("해당 일의 모든 일정이 하루 미뤄집니다.\n정말로 미루겠습니까?")
+                    .setPositiveButton("미루기",
+                        DialogInterface.OnClickListener{ dialog, which ->
+                            Toast.makeText(this@MainActivity, "확인", Toast.LENGTH_SHORT).show()
+                        })
+                    .setNegativeButton("안 미루기",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            Toast.makeText(this@MainActivity, "취소", Toast.LENGTH_SHORT).show()
+                        })
+                builder.show()
             }
         })
     }

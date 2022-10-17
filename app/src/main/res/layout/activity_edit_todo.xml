@@ -63,17 +63,30 @@
 
     <Button
         android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="176dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
         android:text="저장"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etTodoContent"
-        android:layout_marginHorizontal="12dp"/>
+        android:layout_marginBottom="10dp"
+        />
 
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="176dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:text="삭제"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnSave"
+        app:layout_constraintTop_toBottomOf="@id/etTodoContent"
+        android:layout_marginBottom="10dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

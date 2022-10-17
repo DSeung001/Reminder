@@ -1,6 +1,8 @@
 package com.example.reminder
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -78,6 +80,27 @@ class EditTodoActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        binding.btnDelete.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("해당 일을 정말 삭제하겠습니까?")
+                .setMessage("메시지 내용입니다.")
+                .setPositiveButton("삭제",
+                DialogInterface.OnClickListener{
+                    dialog, id ->
+                    val intent = Intent().apply {
+                        putExtra("todo", todo)
+                        putExtra("flag", 2)
+                    }
+                    setResult(RESULT_OK, intent)
+                    finish()
+                })
+                .setNegativeButton("취소",
+                DialogInterface.OnClickListener{
+                    dialog, id ->
+                })
+            builder.show()
         }
     }
 }

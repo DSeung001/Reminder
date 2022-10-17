@@ -182,6 +182,12 @@ class MainActivity : AppCompatActivity() {
                     }
                     Toast.makeText(this, "수정되었습니다.", Toast.LENGTH_SHORT).show()
                 }
+                2->{
+                    CoroutineScope(Dispatchers.IO).launch {
+//                        todoViewModel.delete(todo)
+                    }
+                    Toast.makeText(this, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

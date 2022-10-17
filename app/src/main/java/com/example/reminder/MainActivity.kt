@@ -1,5 +1,6 @@
 package com.example.reminder
 
+import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +23,8 @@ import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         todoAdapter.setItemBtnClearClickListener(object: TodoAdapter.ItemBtnClearClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val date = LocalDate.now().toString()
+                    val date = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
                     var history = historyViewModel.getHistory(itemId, date)
                     if (history == null) {
                         historyViewModel.insert(History(0, itemId, true, date))
@@ -100,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         todoAdapter.setItemBtnClearCancelClickListener(object: TodoAdapter.ItemBtnClearCancelClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val date = LocalDate.now().toString()
+                    val date = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
                     var history = historyViewModel.getHistory(itemId, date)
                     historyViewModel.delete(history)
                 }
@@ -115,10 +117,18 @@ class MainActivity : AppCompatActivity() {
                         DialogInterface.OnClickListener{ dialog, which ->
                             CoroutineScope(Dispatchers.IO).launch {
                                 val todo = todoViewModel.getOne(itemId)
+                                val cal = Calendar.getInstance()
+                                cal.add(Calendar.DATE, 2)
+                                cal.add(Calendar.DATE, -todo!!.repeat)
+                                val newStartedAt = "%d-%02d-%02d".format(
+                                    cal.get(Calendar.YEAR),
+                                    cal.get(Calendar.MONTH)+1,
+                                    cal.get(Calendar.DATE)
+                                )
                                 val newTodo = Todo(
                                     0,
                                     todo!!.title,
-                                    LocalDate.now().plusDays(2).minusDays(todo!!.repeat.toLong()).toString(),
+                                    newStartedAt,
                                     todo!!.repeat,
                                     todo!!.content,
                                     todo!!.delay+1,
@@ -153,26 +163,6 @@ class MainActivity : AppCompatActivity() {
                 builder.show()
             }
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_option, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item?.itemId){
-            R.id.menu_item_delete -> {
-//                Toast.makeText(this, "삭제", Toast.LENGTH_SHORT).show()
-//                todoViewModel.todoList.value!!.forEach{
-//                    if (it.isChecked){
-//                        todoViewModel.delete(it)
-//                    }
-//                }
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

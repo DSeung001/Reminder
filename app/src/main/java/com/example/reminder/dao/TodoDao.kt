@@ -21,7 +21,6 @@ interface TodoDao {
             "AND setting_on = date('now')" +
             "WHERE num_now >= num_started_at " +
             "AND Cast((num_now - num_started_at) As Integer) % repeat = 0 " +
-            "AND (num_now == num_started_at AND repeat != 1) != 1 " +
             "AND expired_at IS NULL")
     fun list(): LiveData<MutableList<TodoHistory>>
 
@@ -46,7 +45,6 @@ interface TodoDao {
             "AND setting_on = (:selectOnDate) " +
             "WHERE num_now >= num_started_at " +
             "AND Cast((num_now - num_started_at) As Integer) % repeat = 0 " +
-            "AND (num_now == num_started_at AND repeat != 1) != 1 " +
             "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) )")
     fun listOnDate(selectOnDate:String):LiveData<MutableList<TodoHistory>>
 

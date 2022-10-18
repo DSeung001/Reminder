@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.example.reminder.databinding.ActivityEditTodoBinding
 import com.example.reminder.dto.Todo
@@ -42,6 +43,7 @@ class EditTodoActivity : AppCompatActivity() {
             binding.etTodoRepeat.setText(todo!!.repeat.toString())
             binding.etTodoContent.setText(todo!!.content)
             binding.btnSave.text = "수정하기"
+            binding.btnDelete.visibility = View.VISIBLE
         }
 
         binding.btnSave.setOnClickListener{
@@ -90,6 +92,7 @@ class EditTodoActivity : AppCompatActivity() {
                 DialogInterface.OnClickListener{
                     dialog, id ->
                     val intent = Intent().apply {
+                        val todo = Todo(todo!!.id, todo!!.title, todo!!.started_at, todo!!.repeat, todo!!.content, todo!!.delay, todo!!.created_at, java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),)
                         putExtra("todo", todo)
                         putExtra("flag", 2)
                     }

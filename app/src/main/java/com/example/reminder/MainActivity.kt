@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 2->{
                     CoroutineScope(Dispatchers.IO).launch {
-//                        todoViewModel.delete(todo)
+                        todoViewModel.update(todo)
                     }
                     Toast.makeText(this, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
                 }

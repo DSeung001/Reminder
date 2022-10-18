@@ -39,7 +39,7 @@ class CalendarActivity : AppCompatActivity() {
         binding.rvTodoList.adapter = calendarAdapter
 
         binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            var date = String.format("%d-%d-%d", year, month+1, dayOfMonth)
+            var date = String.format("%04d-%02d-%02d", year, month+1, dayOfMonth)
             var calendar:Calendar = Calendar.getInstance()
             calendar.set(year,month,dayOfMonth)
 

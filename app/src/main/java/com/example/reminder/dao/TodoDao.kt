@@ -45,7 +45,7 @@ interface TodoDao {
             "AND setting_on = (:selectOnDate) " +
             "WHERE num_now >= num_started_at " +
             "AND Cast((num_now - num_started_at) As Integer) % repeat = 0 " +
-            "AND (expired_at IS NULL OR JulianDay(expired_at) >= JulianDay((:selectOnDate)) )")
+            "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) )")
     fun listOnDate(selectOnDate:String):LiveData<MutableList<TodoHistory>>
 
     @Query("SELECT * FROM todoTable WHERE id = (:id)")

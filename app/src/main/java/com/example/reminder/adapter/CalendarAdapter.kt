@@ -18,14 +18,16 @@ class CalendarAdapter(val context: Context):RecyclerView.Adapter<CalendarAdapter
     private var list = mutableListOf<TodoDao.TodoHistory>()
 
     inner class CalendarViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
-        var imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
+        val title = itemView.findViewById<TextView>(R.id.tvTodoItem)
+        val imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
+        val tvDelay = itemView.findViewById<TextView>(R.id.tvDelay)
 
         fun onBind(data:TodoDao.TodoHistory){
             title.text = data.title
             if(data.result == true){
                 imgClear.visibility = View.VISIBLE
             }
+            tvDelay.text = "미룬 횟수 : "+data.delay
         }
     }
 

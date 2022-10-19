@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminder.R
 import com.example.reminder.dao.TodoDao
+import org.w3c.dom.Text
 
 class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
@@ -22,11 +23,12 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
 
     inner class TodoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        var title = itemView.findViewById<TextView>(R.id.tvTodoItem)
-        var btnClear = itemView.findViewById<Button>(R.id.btnClear)
-        var btnClearCancel = itemView.findViewById<Button>(R.id.btnClearCancel)
-        var btnDelay = itemView.findViewById<Button>(R.id.btnDelay)
-        var imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
+        val title = itemView.findViewById<TextView>(R.id.tvTodoItem)
+        val btnClear = itemView.findViewById<Button>(R.id.btnClear)
+        val btnClearCancel = itemView.findViewById<Button>(R.id.btnClearCancel)
+        val btnDelay = itemView.findViewById<Button>(R.id.btnDelay)
+        val imgClear = itemView.findViewById<ImageView>(R.id.imgClear)
+        val tvDelay = itemView.findViewById<TextView>(R.id.tvDelay)
 
         fun onBind(data: TodoDao.TodoHistory){
             title.text = data.title
@@ -39,6 +41,7 @@ class TodoAdapter(val context: Context):RecyclerView.Adapter<TodoAdapter.TodoVie
                 btnClear.visibility = View.INVISIBLE
                 btnDelay.visibility = View.INVISIBLE
             }
+            tvDelay.text = "미룬 횟수 : "+data.delay
             btnClearCancel.setOnClickListener {
                 imgClear.visibility = View.INVISIBLE
                 btnClearCancel.visibility = View.INVISIBLE

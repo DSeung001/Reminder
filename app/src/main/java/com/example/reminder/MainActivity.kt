@@ -45,18 +45,19 @@ class MainActivity : AppCompatActivity() {
         val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
         actionBar!!.setBackgroundDrawable(colorDrawable)
 
+        // today
+        binding.tvToday.text = SimpleDateFormat("yyyy년 MM월 dd일").format(System.currentTimeMillis())
+
         todoViewModel = ViewModelProvider(this, ViewModelFactory(null)).get(TodoViewModel::class.java)
         historyViewModel =  ViewModelProvider(this)[HistoryViewModel::class.java]
 
-        // fab, add
-        binding.fabAdd.setOnClickListener{
+        binding.imgBtnAdd.setOnClickListener{
             var intent = Intent(this, EditTodoActivity::class.java).apply {
                 putExtra("type", "ADD")
             }
             requestActivity.launch(intent)
         }
-        // fab, calendar
-        binding.fabCalendar.setOnClickListener{
+        binding.imgBtnCalendar.setOnClickListener{
             var intent = Intent(this, CalendarActivity::class.java).apply {}
             requestActivity.launch(intent)
         }

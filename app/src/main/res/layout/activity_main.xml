@@ -38,6 +38,7 @@
                 android:layout_gravity="center_vertical"
                 android:text="오늘 날짜"
                 android:layout_marginRight="15dp"
+                android:textColor="@color/baseBackground"
                 />
 
             <ImageButton

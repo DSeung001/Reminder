@@ -1,14 +1,14 @@
 package com.example.reminder
 
-import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +38,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // actionbar color chagne
+        val actionBar: ActionBar?
+        actionBar = supportActionBar
+        val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
+        actionBar!!.setBackgroundDrawable(colorDrawable)
 
         todoViewModel = ViewModelProvider(this, ViewModelFactory(null)).get(TodoViewModel::class.java)
         historyViewModel =  ViewModelProvider(this)[HistoryViewModel::class.java]

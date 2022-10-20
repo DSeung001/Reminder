@@ -1,7 +1,10 @@
 package com.example.reminder
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,12 @@ class CalendarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // actionbar color chagne
+        val actionBar: ActionBar?
+        actionBar = supportActionBar
+        val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
+        actionBar!!.setBackgroundDrawable(colorDrawable)
 
         var date = intent.getStringExtra("date")
         var timeInMillis = intent.getLongExtra("timeInMillis", 0)

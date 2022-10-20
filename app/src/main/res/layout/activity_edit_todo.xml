@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="10sp"
     tools:context=".EditTodoActivity">
 
     <EditText
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="5sp"
         android:id="@+id/etTodoTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,19 +17,21 @@
         app:layout_constraintBottom_toTopOf="@id/btnTodoStartedAt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="12sp"
         />
 
     <Button
         android:id="@+id/btnTodoStartedAt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/baseBackground"
         android:text="시작일을 선택해주세요."
         app:layout_constraintTop_toBottomOf="@id/etTodoTitle"
         app:layout_constraintBottom_toTopOf="@id/etTodoRepeat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="12sp"
+        android:textStyle="bold"
         />
 
     <EditText
@@ -42,13 +44,13 @@
         app:layout_constraintBottom_toTopOf="@id/etTodoRepeat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="12sp"
         />
 
     <EditText
         android:id="@+id/etTodoContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="0sp"
         android:gravity="start|top"
         android:hint="내용을 입력해주세요."
         android:inputType="textMultiLine"
@@ -58,36 +60,40 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etTodoRepeat"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="12sp"
         />
 
     <Button
         android:id="@+id/btnSave"
-        android:layout_width="176dp"
-        android:layout_height="48dp"
+        android:layout_width="176sp"
+        android:layout_height="48sp"
         android:layout_alignParentBottom="true"
         android:text="저장"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnDelete"
         app:layout_constraintTop_toBottomOf="@id/etTodoContent"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="10sp"
+        android:backgroundTint="@color/baseBackground"
+        android:textStyle="bold"
         />
 
     <Button
         android:id="@+id/btnDelete"
-        android:layout_width="176dp"
-        android:layout_height="48dp"
+        android:layout_width="176sp"
+        android:layout_height="48sp"
         android:layout_alignParentBottom="true"
         android:text="삭제"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnSave"
+        app:layout_constraintEnd_toStartOf="@+id/btnSave"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etTodoContent"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="10sp"
         android:visibility="invisible"
+        android:backgroundTint="@color/baseBackground"
+        android:textStyle="bold"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

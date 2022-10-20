@@ -4,10 +4,13 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.example.reminder.databinding.ActivityEditTodoBinding
 import com.example.reminder.dto.Todo
 import java.text.SimpleDateFormat
@@ -22,6 +25,12 @@ class EditTodoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditTodoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // actionbar color chagne
+        val actionBar: ActionBar?
+        actionBar = supportActionBar
+        val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
+        actionBar!!.setBackgroundDrawable(colorDrawable)
 
         val type = intent.getStringExtra("type")
 

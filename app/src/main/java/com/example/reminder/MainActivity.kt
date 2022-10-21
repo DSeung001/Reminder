@@ -74,15 +74,6 @@ class MainActivity : AppCompatActivity() {
         binding.rvTodoList.layoutManager = LinearLayoutManager(this)
         binding.rvTodoList.adapter = todoAdapter
 
-        todoAdapter.setItemCheckBoxClickListener(object: TodoAdapter.ItemCheckBoxClickListener{
-            override fun onClick(view: View, position: Int, itemId: Long) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    /*val todo = todoViewModel.getOne(itemId)
-                    todo.isChecked = !todo.isChecked
-                    todoViewModel.update(todo)*/
-                }
-            }
-        })
         todoAdapter.setItemClickListener(object: TodoAdapter.ItemClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {

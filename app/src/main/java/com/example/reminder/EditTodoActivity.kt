@@ -50,6 +50,7 @@ class EditTodoActivity : AppCompatActivity() {
             binding.etTodoTitle.setText(todo!!.title)
             binding.btnTodoStartedAt.setText(todo!!.started_at)
             binding.etTodoRepeat.setText(todo!!.repeat.toString())
+            binding.etTodoRepeat.isEnabled = false
             binding.etTodoContent.setText(todo!!.content)
             binding.btnSave.text = "수정하기"
             binding.btnDelete.visibility = View.VISIBLE
@@ -65,6 +66,8 @@ class EditTodoActivity : AppCompatActivity() {
             if(type.equals("ADD")){
                 if(repeat == "0" ){
                     Toast.makeText(this, "0을 주기로 할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else if (startedAt == "시작일을 선택해주세요."){
+                    Toast.makeText(this, "시작일을 선택해주세요.", Toast.LENGTH_SHORT).show()
                 } else{
                     if(title.isNotEmpty() && repeat.isNotEmpty() && content.isNotEmpty()){
                         val todo = Todo(0, title, startedAt, repeat.toInt(), content, 0, createdAt, null)
@@ -96,7 +99,7 @@ class EditTodoActivity : AppCompatActivity() {
         binding.btnDelete.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("해당 일을 정말 삭제하겠습니까?")
-                .setMessage("메시지 내용입니다.")
+                .setMessage("결심했을 때를 생각해주세요!")
                 .setPositiveButton("삭제",
                 DialogInterface.OnClickListener{
                     dialog, id ->

@@ -56,7 +56,6 @@
                 app:srcCompat="@drawable/ic_calendar"
                 android:backgroundTint="@color/white"
                  />
-
         </LinearLayout>
 
         <TextView

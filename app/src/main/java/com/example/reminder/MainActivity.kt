@@ -1,13 +1,10 @@
 package com.example.reminder
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,8 +13,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.reminder.Constant.Companion.ALARM_TIMER
-import com.example.reminder.Constant.Companion.NOTIFICATION_ID
 import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.History
@@ -43,31 +38,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-
-        val intent = Intent(this,MyReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this, NOTIFICATION_ID, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
-        val repeatInterval: Long = ALARM_TIMER * 1000L
-
-        // 채널로는 디버그가 안되고 아래 문구를
-        // 저장한 날 기준으로 12시로 알림 보내게 => 할일있게
-        // https://hanyeop.tistory.com/217
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 1)
-        }
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            repeatInterval,
-            pendingIntent
-        )
 
         // actionbar color chagne
         val actionBar: ActionBar?

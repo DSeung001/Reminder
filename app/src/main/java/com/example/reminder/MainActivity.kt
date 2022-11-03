@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +22,7 @@ import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
 import com.example.reminder.factory.ViewModelFactory
+import com.example.reminder.receiver.AlarmReceiver
 import com.example.reminder.viewmodel.HistoryViewModel
 import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
-        val intent = Intent(this,MyReceiver::class.java)
+        val intent = Intent(this, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             this, NOTIFICATION_ID, intent,
             PendingIntent.FLAG_UPDATE_CURRENT
@@ -59,17 +59,17 @@ class MainActivity : AppCompatActivity() {
         // https://hanyeop.tistory.com/217
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 1)
+            set(Calendar.HOUR_OF_DAY, 11)
+            set(Calendar.MINUTE, 0)
         }
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            repeatInterval,
+            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
 
-        // actionbar color chagne
+        // actionbar color change
         val actionBar: ActionBar?
         actionBar = supportActionBar
         val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
@@ -91,6 +91,12 @@ class MainActivity : AppCompatActivity() {
             var intent = Intent(this, CalendarActivity::class.java).apply {}
             requestActivity.launch(intent)
         }
+
+        val todoCount = todoViewModel.itemCount
+        val test = todoCount
+        // liveData에서 가져오든
+        // 처음부터 count를 넘기든 해야함
+        Toast.makeText(this, "$todoCount 해야함", Toast.LENGTH_LONG).show();
 
         todoViewModel.todoList.observe(this){
             todoAdapter.update(it)

@@ -38,6 +38,10 @@ interface TodoDao {
         val num_started_at:Int
     )
 
+    data class TodoCount(
+        val count:Long
+    )
+
     @Query("" +
             "SELECT td.id, title, started_at, repeat, content, delay, result, created_at, JulianDay((:selectOnDate)) AS num_now, JulianDay(started_at) AS num_started_at " +
             "FROM todoTable AS td " +
@@ -56,4 +60,14 @@ interface TodoDao {
 
     @Delete
     fun delete(dto: Todo)
+
+    @Query("" +
+            "SELECT COUNT(*) AS count " +
+            "FROM todoTable AS td " +
+            "LEFT JOIN historyTable ON todo_id = td.id " +
+            "AND setting_on = date('now')" +
+            "WHERE JulianDay(date('now')) >= JulianDay(started_at) " +
+            "AND Cast((JulianDay(date('now')) - JulianDay(started_at)) As Integer) % repeat = 0 " +
+            "AND expired_at IS NULL")
+    fun getCount(): List<TodoCount>
 }

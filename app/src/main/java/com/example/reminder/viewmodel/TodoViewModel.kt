@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 
 class TodoViewModel(date: String?) : ViewModel() {
     val todoList: LiveData<MutableList<TodoDao.TodoHistory>>
+    val itemCount: List<TodoDao.TodoCount>
+
     private val todoRepository: TodoRepository = TodoRepository.get()
 
     init {
@@ -19,6 +21,8 @@ class TodoViewModel(date: String?) : ViewModel() {
         } else{
             todoRepository.listOnDate(date)
         }
+
+        itemCount = todoRepository.getCount()
     }
 
     fun getOne(id: Long) = todoRepository.getTodo(id)

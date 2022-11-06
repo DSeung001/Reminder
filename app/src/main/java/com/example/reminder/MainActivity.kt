@@ -92,12 +92,6 @@ class MainActivity : AppCompatActivity() {
             requestActivity.launch(intent)
         }
 
-        val todoCount = todoViewModel.itemCount
-        val test = todoCount
-        // liveData에서 가져오든
-        // 처음부터 count를 넘기든 해야함
-        Toast.makeText(this, "$todoCount 해야함", Toast.LENGTH_LONG).show();
-
         todoViewModel.todoList.observe(this){
             todoAdapter.update(it)
             if(it.size > 0){

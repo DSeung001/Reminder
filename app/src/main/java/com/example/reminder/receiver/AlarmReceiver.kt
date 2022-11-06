@@ -13,6 +13,10 @@ import com.example.reminder.Constant.Companion.CHANNEL_ID
 import com.example.reminder.Constant.Companion.NOTIFICATION_ID
 import com.example.reminder.MainActivity
 import com.example.reminder.R
+import com.example.reminder.repository.TodoRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -56,18 +60,26 @@ class AlarmReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val content = "없습니다.";
-
-
+        var content = "없습니다.";
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_alarm) // 아이콘
-            .setContentTitle("오늘 할일은") // 제목
-            .setContentText("없습니다.") // 내용
+            .setContentText(content) // 내용
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
+        CoroutineScope(Dispatchers.IO).launch {
+            builder.setContentTitle("오늘 할일은")
+            val todoRepository = TodoRepository.get()
+            val todayTodoCount = todoRepository.getCount()[0].count
+
+            if (todayTodoCount > 0){
+                builder.setContentText(todayTodoCount.toString()+"개 있습니다.")
+            }
+
+            notificationManager.notify(NOTIFICATION_ID, builder.build())
+        }
+
     }
 }

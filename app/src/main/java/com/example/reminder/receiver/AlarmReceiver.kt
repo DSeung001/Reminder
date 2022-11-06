@@ -43,7 +43,7 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationChannel.enableLights(true) // 불빛
             notificationChannel.lightColor = Color.RED // 색상
             notificationChannel.enableVibration(true) // 진동 여부
-            notificationChannel.description = "Reminder push alram." // 채널 정보
+            notificationChannel.description = "Reminder push alarm." // 채널 정보
             notificationManager.createNotificationChannel(
                 notificationChannel
             )

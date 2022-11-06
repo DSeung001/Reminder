@@ -1,5 +1,7 @@
 package com.example.reminder
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -13,11 +15,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.reminder.Constant.Companion.ALARM_TIMER
+import com.example.reminder.Constant.Companion.NOTIFICATION_ID
 import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
 import com.example.reminder.factory.ViewModelFactory
+import com.example.reminder.receiver.AlarmReceiver
 import com.example.reminder.viewmodel.HistoryViewModel
 import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +44,32 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // actionbar color chagne
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, NOTIFICATION_ID, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
+        val repeatInterval: Long = ALARM_TIMER * 1000L
+
+        // 채널로는 디버그가 안되고 아래 문구를
+        // 저장한 날 기준으로 12시로 알림 보내게 => 할일있게
+        // https://hanyeop.tistory.com/217
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 11)
+            set(Calendar.MINUTE, 0)
+        }
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+
+        // actionbar color change
         val actionBar: ActionBar?
         actionBar = supportActionBar
         val colorDrawable = ColorDrawable(Color.parseColor("#303030"))

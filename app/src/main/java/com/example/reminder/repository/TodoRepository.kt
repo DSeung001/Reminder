@@ -31,6 +31,8 @@ class TodoRepository private constructor(context: Context){
 
     fun delete(dto: Todo) = todoDao.delete(dto)
 
+    fun getCount() = todoDao.getCount()
+
     companion object {
         private var INSTANCE: TodoRepository?=null
 

@@ -72,8 +72,10 @@ class AlarmReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
             builder.setContentTitle("오늘 할일은")
             val todoRepository = TodoRepository.get()
-            val todayTodoCount = todoRepository.getCount()[0].count
-
+            var todayTodoCount = 0
+            if(todoRepository.getCount().isNotEmpty()){
+                todayTodoCount = todoRepository.getCount()[0].count.toInt()
+            }
             if (todayTodoCount > 0){
                 builder.setContentText(todayTodoCount.toString()+"개 있습니다.")
             }

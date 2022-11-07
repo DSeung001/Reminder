@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId) {
             R.id.btnSetting -> {
-                Toast.makeText(this, "설정 페이지 이동", Toast.LENGTH_SHORT).show()
+                requestActivity.launch(Intent(this, SettingActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
@@ -61,10 +61,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-
-        val intent = Intent(this, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
-            this, NOTIFICATION_ID, intent,
+            this,
+            NOTIFICATION_ID,
+            Intent(this, AlarmReceiver::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
@@ -85,12 +85,6 @@ class MainActivity : AppCompatActivity() {
             pendingIntent
         )
 
-        // actionbar color change
-        val actionBar: ActionBar?
-        actionBar = supportActionBar
-        val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
-        actionBar!!.setBackgroundDrawable(colorDrawable)
-
         // today
         binding.tvToday.text = SimpleDateFormat("yyyy년 MM월 dd일").format(System.currentTimeMillis())
 
@@ -98,14 +92,12 @@ class MainActivity : AppCompatActivity() {
         historyViewModel =  ViewModelProvider(this)[HistoryViewModel::class.java]
 
         binding.imgBtnAdd.setOnClickListener{
-            var intent = Intent(this, EditTodoActivity::class.java).apply {
+            requestActivity.launch(Intent(this, EditTodoActivity::class.java).apply {
                 putExtra("type", "ADD")
-            }
-            requestActivity.launch(intent)
+            })
         }
         binding.imgBtnCalendar.setOnClickListener{
-            var intent = Intent(this, CalendarActivity::class.java).apply {}
-            requestActivity.launch(intent)
+            requestActivity.launch(Intent(this, CalendarActivity::class.java))
         }
 
         todoViewModel.todoList.observe(this){
@@ -124,11 +116,10 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val todo = todoViewModel.getOne(itemId)
-                    val intent = Intent(this@MainActivity, EditTodoActivity::class.java).apply {
+                    requestActivity.launch(Intent(this@MainActivity, EditTodoActivity::class.java).apply {
                         putExtra("type", "EDIT")
                         putExtra("item", todo)
-                    }
-                    requestActivity.launch(intent)
+                    })
                 }
             }
         })
@@ -195,8 +186,7 @@ class MainActivity : AppCompatActivity() {
                             finish() //인텐트 종료
 
                             overridePendingTransition(0, 0)
-                            val newIntent = Intent(this@MainActivity, MainActivity::class.java)
-                            startActivity(newIntent)
+                            startActivity(Intent(this@MainActivity, MainActivity::class.java))
                             overridePendingTransition(0, 0) //인텐트 효과 없애기
                             Toast.makeText(this@MainActivity, "미뤄졌습니다.", Toast.LENGTH_SHORT).show()
                         })

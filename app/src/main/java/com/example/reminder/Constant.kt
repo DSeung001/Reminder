@@ -2,6 +2,9 @@ package com.example.reminder
 
 class Constant {
     companion object {
+        // DATABASE NAME
+        const val DATABASE_NAME = "todo-database.db"
+
         // 아이디 선언
         const val NOTIFICATION_ID = 0
         const val CHANNEL_ID = "reminder_push_alarm"

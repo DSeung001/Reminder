@@ -1,17 +1,16 @@
 package com.example.reminder.repository
 import android.content.Context
 import androidx.room.Room
+import com.example.reminder.Constant
 import com.example.reminder.database.TodoDatabase
 import com.example.reminder.dto.History
-
-private const val DATABASE_NAME = "todo-database.db"
 
 class HistoryRepository private constructor(context: Context){
 
     private val database: TodoDatabase = Room.databaseBuilder(
         context.applicationContext,
         TodoDatabase::class.java,
-        DATABASE_NAME
+        Constant.DATABASE_NAME
     ).build()
 
     private val historyDao = database.historyDao()

@@ -16,7 +16,11 @@ class SettingRepository private constructor(context: Context){
 
     private val settingDao = database.settingDao()
 
+    fun insert(dto: Setting) = settingDao.insert(dto)
+
     suspend fun update(dto: Setting) = settingDao.update(dto)
+
+    fun getSetting(id: Long): Setting = settingDao.selectOne(id)
 
     companion object {
         private var INSTANCE: SettingRepository?=null

@@ -1,7 +1,6 @@
 package com.example.reminder
 
 import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -14,14 +13,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.reminder.Constant.Companion.ALARM_TIMER
-import com.example.reminder.Constant.Companion.NOTIFICATION_ID
 import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
 import com.example.reminder.factory.ViewModelFactory
-import com.example.reminder.receiver.AlarmReceiver
+import com.example.reminder.repository.SettingRepository
 import com.example.reminder.viewmodel.HistoryViewModel
 import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +43,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId) {
             R.id.btnSetting -> {
-                requestActivity.launch(Intent(this, SettingActivity::class.java))
+                CoroutineScope(Dispatchers.IO).launch {
+                    val setting = SettingRepository.get().getSetting(1)
+                    requestActivity.launch(Intent(this@MainActivity, SettingActivity::class.java).apply {
+                        putExtra("setting", setting)
+                    })
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -57,25 +59,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // alarm resetting
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            NOTIFICATION_ID,
-            Intent(this, AlarmReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 11)
-            set(Calendar.MINUTE, 0)
-        }
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
+        AlarmSetting().reSetting(this, alarmManager)
 
         // today
         binding.tvToday.text = SimpleDateFormat("yyyy년 MM월 dd일").format(System.currentTimeMillis())

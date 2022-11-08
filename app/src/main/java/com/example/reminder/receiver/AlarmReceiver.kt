@@ -61,6 +61,7 @@ class AlarmReceiver : BroadcastReceiver() {
         )
 
         var content = "없습니다.";
+
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_alarm) // 아이콘
             .setContentText(content) // 내용
@@ -82,6 +83,5 @@ class AlarmReceiver : BroadcastReceiver() {
 
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
-
     }
 }

@@ -9,6 +9,8 @@ import com.example.reminder.repository.TodoRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DelayReceiver : BroadcastReceiver() {
 
@@ -24,7 +26,9 @@ class DelayReceiver : BroadcastReceiver() {
             val setting = settingRepository.getSetting(1)
 
             if(setting != null && setting.auto_delay == 1){
-                Log.e("check", "00:01 실행")
+                val calendar: Calendar = Calendar.getInstance()
+                calendar.add(Calendar.DAY_OF_YEAR, -1)
+                todoRepository.autoDelayUpdate(SimpleDateFormat("yyyy-MM-dd").format(calendar.time))
             }
         }
     }

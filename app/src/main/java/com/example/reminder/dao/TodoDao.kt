@@ -71,4 +71,14 @@ interface TodoDao {
             "AND expired_at IS NULL")
     fun getCount(): List<TodoCount>
 
+    @Query("" +
+            "UPDATE todoTable SET delay = delay+1 WHERE ID in (" +
+            "SELECT td.id as id " +
+            "FROM todoTable AS td " +
+            "LEFT JOIN historyTable ON todo_id = td.id " +
+            "AND setting_on = (:selectOnDate) "+
+            "WHERE JulianDay(date('now')) >= JulianDay(started_at) " +
+            "AND Cast((JulianDay(date('now')) - JulianDay(started_at)) As Integer) % repeat = 0 " +
+            "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) ))")
+    fun autoDelayUpdate(selectOnDate:String)
 }

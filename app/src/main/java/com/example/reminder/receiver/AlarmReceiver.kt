@@ -9,8 +9,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.example.reminder.Constant.Companion.CHANNEL_ID
-import com.example.reminder.Constant.Companion.NOTIFICATION_ID
+import com.example.reminder.Constant.Companion.ALARM_CHANNEL_ID
+import com.example.reminder.Constant.Companion.ALARM_NOTIFICATION_ID
 import com.example.reminder.MainActivity
 import com.example.reminder.R
 import com.example.reminder.repository.TodoRepository
@@ -21,6 +21,8 @@ import kotlinx.coroutines.launch
 class AlarmReceiver : BroadcastReceiver() {
 
     lateinit var notificationManager: NotificationManager
+
+    val todoRepository = TodoRepository.get()
 
     override fun onReceive(context: Context, intent: Intent) {
         notificationManager =
@@ -36,7 +38,7 @@ class AlarmReceiver : BroadcastReceiver() {
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
-                CHANNEL_ID, // 채널의 아이디
+                ALARM_CHANNEL_ID, // 채널의 아이디
                 "Reminder channel.", // 채널의 이름
                 NotificationManager.IMPORTANCE_HIGH
             )
@@ -55,14 +57,14 @@ class AlarmReceiver : BroadcastReceiver() {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
-            NOTIFICATION_ID, // requestCode
+            ALARM_NOTIFICATION_ID, // requestCode
             contentIntent, // 알림 클릭 시 이동할 인텐트
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         var content = "없습니다.";
 
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_alarm) // 아이콘
             .setContentText(content) // 내용
             .setContentIntent(contentPendingIntent)
@@ -72,7 +74,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             builder.setContentTitle("오늘 할일은")
-            val todoRepository = TodoRepository.get()
             var todayTodoCount = 0
             if(todoRepository.getCount().isNotEmpty()){
                 todayTodoCount = todoRepository.getCount()[0].count.toInt()
@@ -81,7 +82,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 builder.setContentText(todayTodoCount.toString()+"개 있습니다.")
             }
 
-            notificationManager.notify(NOTIFICATION_ID, builder.build())
+            notificationManager.notify(ALARM_NOTIFICATION_ID, builder.build())
         }
     }
 }

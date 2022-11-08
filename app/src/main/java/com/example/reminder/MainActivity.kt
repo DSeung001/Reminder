@@ -19,6 +19,8 @@ import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
 import com.example.reminder.factory.ViewModelFactory
 import com.example.reminder.repository.SettingRepository
+import com.example.reminder.setting.AlarmSetting
+import com.example.reminder.setting.DelaySetting
 import com.example.reminder.viewmodel.HistoryViewModel
 import com.example.reminder.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +63,12 @@ class MainActivity : AppCompatActivity() {
 
         // alarm resetting
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        AlarmSetting().reSetting(this, alarmManager)
+        AlarmSetting().setting(this, alarmManager)
+
+        // delay setting
+        val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        DelaySetting().setting(this, delayManager)
+
 
         // today
         binding.tvToday.text = SimpleDateFormat("yyyy년 MM월 dd일").format(System.currentTimeMillis())

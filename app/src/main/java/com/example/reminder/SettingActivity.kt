@@ -2,14 +2,12 @@ package com.example.reminder
 
 import android.app.AlarmManager
 import android.app.TimePickerDialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Switch
 import com.example.reminder.databinding.ActivitySettingBinding
 import com.example.reminder.dto.Setting
-import com.example.reminder.dto.Todo
 import com.example.reminder.repository.SettingRepository
+import com.example.reminder.setting.AlarmSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +41,7 @@ class SettingActivity : AppCompatActivity() {
                     settingUpdate()
                     // alarm resetting
                     val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-                    AlarmSetting().reSetting(this@SettingActivity, alarmManager)
+                    AlarmSetting().setting(this@SettingActivity, alarmManager)
                 }
             }
 

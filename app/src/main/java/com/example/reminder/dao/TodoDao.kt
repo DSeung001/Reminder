@@ -70,4 +70,5 @@ interface TodoDao {
             "AND Cast((JulianDay(date('now')) - JulianDay(started_at)) As Integer) % repeat = 0 " +
             "AND expired_at IS NULL")
     fun getCount(): List<TodoCount>
+
 }

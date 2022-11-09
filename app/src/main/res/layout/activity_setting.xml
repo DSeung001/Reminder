@@ -17,7 +17,7 @@
             android:id="@+id/switchAutoDelay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="자동 딜레이 여부"
+            android:text="할일 자동으로 미루기"
             android:textSize="20sp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"

@@ -5,7 +5,7 @@
 - Andorid : 5.1 Lollipop
 <br/>
 
-## 개요
+## 차례
 - [배경](https://github.com/DSeung001/Reminder#%EB%B0%B0%EA%B2%BD)
 - [Reminder란](https://github.com/DSeung001/Reminder#Reminder%EB%9E%80)
 - [성가시게 했던 점](https://github.com/DSeung001/Reminder#%EC%84%B1%EA%B0%80%EC%8B%9C%EA%B2%8C-%ED%96%88%EB%8D%98-%EC%A0%90)

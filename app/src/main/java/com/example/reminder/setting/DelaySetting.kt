@@ -15,7 +15,7 @@ class DelaySetting {
             context,
             Constant.DELAY_NOTIFICATION_ID,
             Intent(context, DelayReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val calendar = Calendar.getInstance().apply {

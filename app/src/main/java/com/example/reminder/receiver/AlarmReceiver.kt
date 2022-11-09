@@ -59,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
             context,
             ALARM_NOTIFICATION_ID, // requestCode
             contentIntent, // 알림 클릭 시 이동할 인텐트
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         var content = "없습니다.";

@@ -7,7 +7,7 @@
 <hr/>
 
 ## 개요
-- [배경](https://github.com/DSeung001/Reminder#%EB%A7%8C%EB%93%A4%EA%B2%8C%EB%90%9C-%EA%B3%84%EA%B8%B0)
+- [배경](https://github.com/DSeung001/Reminder#%EB%B0%B0%EA%B2%BD)
 - [Reminder란](https://github.com/DSeung001/Reminder#Reminder%EB%9E%80)
 - [성가시게 했던 점](https://github.com/DSeung001/Reminder#%EC%84%B1%EA%B0%80%EC%8B%9C%EA%B2%8C-%ED%96%88%EB%8D%98-%EC%A0%90)
 - [고도화](https://github.com/DSeung001/Reminder#%EA%B3%A0%EB%8F%84%ED%99%94)

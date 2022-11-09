@@ -10,7 +10,6 @@
 - [Reminder란](https://github.com/DSeung001/Reminder#Reminder%EB%9E%80)
 - [성가시게 했던 점](https://github.com/DSeung001/Reminder#%EC%84%B1%EA%B0%80%EC%8B%9C%EA%B2%8C-%ED%96%88%EB%8D%98-%EC%A0%90)
 - [고도화](https://github.com/DSeung001/Reminder#%EA%B3%A0%EB%8F%84%ED%99%94)
-
 <br/>
 
 ## 배경
@@ -22,7 +21,7 @@
 직접 만들기로 했다
 
 겸사겸사 코틀린이 재밌어 보여 코틀린으로 개발했다.
-
+<br/>
 
 ## Reminder란
 
@@ -43,7 +42,7 @@
 
 ### 매일 알림을 통해 오늘 할일이 몇개인지 알 수 있다! <br/>
 ![](source/alarm.gif)
-
+<br/>
 
 ## 성가시게 했던 점
 - 미루기 기능을 사용했을 때 할 일을 완료되었던 날들의 기록을 남긴 채로 어떻게 처리하지?
@@ -52,7 +51,7 @@
   - ViewModelFactory 기능을 사용해 ViewModel 에 성공적으로 값을 넘겨 달력 기능을 만들 수 있었습니다. 
 - Activity 에서 바로 room 의 데이터를 부를 경우 에러가 발생하네?
   - UI 스레드에서는 지연이 생기는 작업을 할 수 없음, 별도의 스레드를 사용해야 합니다.
-
+<br/>
 
 ## 고도화
 - 2022-11-08 : 오늘 해야할 일이 몇 개인지 알려주는 알림 기능 추가 및 알림에 대한 시간 설정 기능 추가

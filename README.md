@@ -28,14 +28,19 @@
 
 ### 습관을 저장해서 주기마다 확인이 가능하다! <br/>
 ![](source/create.gif)
+
 ### 습관은 바뀌는 법, 수정 및 삭제도 가능하다! <br/>
 ![](source/edit_delete.gif)
+
 ### 오늘도 바쁘게 살아온 나를 위해 하루 정도는 미룰 수도 있다..! <br/>
 ![](source/delay.gif)
+
 ### 캘린더 화면으로 전체 일정 및 지난 행적을 확인할 수 있다! <br/>
 ![](source/calendar.gif)
+
 ### 설정을 통해 어제하지 못한 일을 내일로 자동적으로 미루거나 알림 시간을 정할 수 있다! <br/>
 ![](source/setting.gif)
+
 ### 매일 알림을 통해 오늘 할일이 몇개인지 알 수 있다! <br/>
 ![](source/alarm.gif)
 

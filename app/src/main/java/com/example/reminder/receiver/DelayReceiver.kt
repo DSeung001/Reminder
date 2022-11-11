@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.example.reminder.dto.Todo
 import com.example.reminder.repository.OptionRepository
 import com.example.reminder.repository.TodoRepository
 import kotlinx.coroutines.CoroutineScope
@@ -41,17 +42,28 @@ class DelayReceiver : BroadcastReceiver() {
                         cal.get(Calendar.MONTH)+1,
                         cal.get(Calendar.DATE)
                     )
-                    val newTodo = todo
-                    newTodo.id = 0
-                    newTodo.started_at = newStartedAt
-                    newTodo.delay = newTodo.delay + 1
-                    newTodo.created_at = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
-                    newTodo.expired_at = null
-
-                    todo.expired_at = java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
-
+                    val newTodo = Todo(
+                        0,
+                        todo!!.title,
+                        newStartedAt,
+                        todo!!.repeat,
+                        todo!!.content,
+                        todo!!.delay+1,
+                        SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis()),
+                        null
+                    )
+                    val updateTodo = Todo(
+                        todo!!.id,
+                        todo!!.title,
+                        todo!!.started_at,
+                        todo!!.repeat,
+                        todo!!.content,
+                        todo!!.delay,
+                        todo!!.created_at,
+                        SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),
+                    )
                     todoRepository.insert(newTodo)
-                    todoRepository.update(todo)
+                    todoRepository.update(updateTodo)
                 }
             }
         }

@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("미루기",
                         DialogInterface.OnClickListener{ dialog, which ->
                             CoroutineScope(Dispatchers.IO).launch {
+                                // 이거 이렇게 하니깐 짧은 복사 그거 문제 나오네
                                 val todo = todoViewModel.getOne(itemId)
                                 val cal = Calendar.getInstance()
                                 cal.add(Calendar.DATE, 2)
@@ -143,16 +144,28 @@ class MainActivity : AppCompatActivity() {
                                     cal.get(Calendar.MONTH)+1,
                                     cal.get(Calendar.DATE)
                                 )
-                                val newTodo = todo
-                                newTodo.id = 0
-                                newTodo.started_at = newStartedAt
-                                newTodo.delay = newTodo.delay + 1
-                                newTodo.created_at = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
-                                newTodo.expired_at = null
-                                todo.expired_at = java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
-
+                                val newTodo = Todo(
+                                    0,
+                                    todo!!.title,
+                                    newStartedAt,
+                                    todo!!.repeat,
+                                    todo!!.content,
+                                    todo!!.delay+1,
+                                    java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis()),
+                                    null
+                                )
+                                val updateTodo = Todo(
+                                    todo!!.id,
+                                    todo!!.title,
+                                    todo!!.started_at,
+                                    todo!!.repeat,
+                                    todo!!.content,
+                                    todo!!.delay,
+                                    todo!!.created_at,
+                                    java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),
+                                )
                                 todoViewModel.insert(newTodo)
-                                todoViewModel.update(todo)
+                                todoViewModel.update(updateTodo)
                             }
                             finish() //인텐트 종료
 

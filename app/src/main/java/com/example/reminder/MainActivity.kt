@@ -17,8 +17,9 @@ import com.example.reminder.adapter.TodoAdapter
 import com.example.reminder.databinding.ActivityMainBinding
 import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
+import com.example.reminder.dto.Option
 import com.example.reminder.factory.ViewModelFactory
-import com.example.reminder.repository.SettingRepository
+import com.example.reminder.repository.OptionRepository
 import com.example.reminder.setting.AlarmSetting
 import com.example.reminder.setting.DelaySetting
 import com.example.reminder.viewmodel.HistoryViewModel
@@ -29,13 +30,14 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     lateinit var todoViewModel: TodoViewModel
     lateinit var historyViewModel: HistoryViewModel
     lateinit var todoAdapter: TodoAdapter
+
+    val optionRepository = OptionRepository.get()
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -46,9 +48,12 @@ class MainActivity : AppCompatActivity() {
         when(item?.itemId) {
             R.id.btnSetting -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val setting = SettingRepository.get().getSetting(1)
-                    requestActivity.launch(Intent(this@MainActivity, SettingActivity::class.java).apply {
-                        putExtra("setting", setting)
+                    val alarmTime = OptionRepository.get().getSettingByOptionName("alarm_time")
+                    val autoDelay = OptionRepository.get().getSettingByOptionName("auto_delay")
+
+                    requestActivity.launch(Intent(this@MainActivity, OptionActivity::class.java).apply {
+                        putExtra("alarmTime", alarmTime)
+                        putExtra("autoDelay", autoDelay)
                     })
                 }
             }
@@ -61,13 +66,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // alarm resetting
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        AlarmSetting().setting(this, alarmManager)
-
-        // delay setting
-        val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        DelaySetting().setting(this, delayManager)
+        applicationInitialization()
 
         // today
         binding.tvToday.text = SimpleDateFormat("yyyy년 MM월 dd일").format(System.currentTimeMillis())
@@ -144,28 +143,16 @@ class MainActivity : AppCompatActivity() {
                                     cal.get(Calendar.MONTH)+1,
                                     cal.get(Calendar.DATE)
                                 )
-                                val newTodo = Todo(
-                                    0,
-                                    todo!!.title,
-                                    newStartedAt,
-                                    todo!!.repeat,
-                                    todo!!.content,
-                                    todo!!.delay+1,
-                                    java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis()),
-                                    null
-                                )
-                                val updateTodo = Todo(
-                                    todo!!.id,
-                                    todo!!.title,
-                                    todo!!.started_at,
-                                    todo!!.repeat,
-                                    todo!!.content,
-                                    todo!!.delay,
-                                    todo!!.created_at,
-                                    java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),
-                                )
+                                val newTodo = todo
+                                newTodo.id = 0
+                                newTodo.started_at = newStartedAt
+                                newTodo.delay = newTodo.delay + 1
+                                newTodo.created_at = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
+                                newTodo.expired_at = null
+                                todo.expired_at = java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
+
                                 todoViewModel.insert(newTodo)
-                                todoViewModel.update(updateTodo)
+                                todoViewModel.update(todo)
                             }
                             finish() //인텐트 종료
 
@@ -181,6 +168,31 @@ class MainActivity : AppCompatActivity() {
                 builder.show()
             }
         })
+    }
+
+    // database seeding, alarm service starting
+    private fun applicationInitialization() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val setting = optionRepository.getSettingById(1)
+            if(setting == null){
+                optionRepository.insert(Option(0, "alarm_time", "11:00"))
+                optionRepository.insert(Option(0, "auto_delay", "false"))
+                optionRepository.insert(Option(0, "first_alarm_setting", "false"))
+                optionRepository.insert(Option(0, "first_auto_delay_setting", "false"))
+            }
+
+            // alarm first setting
+            if(optionRepository.getSettingByOptionName("first_alarm_setting").option_value == "false"){
+                val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+                AlarmSetting().setting(this@MainActivity, alarmManager)
+            }
+
+            // delay setting
+            if(optionRepository.getSettingByOptionName("first_auto_delay_setting").option_value == "false"){
+                val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
+                DelaySetting().setting(this@MainActivity, delayManager)
+            }
+        }
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.example.reminder.Constant
 import com.example.reminder.database.TodoDatabase
-import com.example.reminder.dto.Setting
+import com.example.reminder.dto.Option
 
-class SettingRepository private constructor(context: Context){
+class OptionRepository private constructor(context: Context){
 
     private val database: TodoDatabase = Room.databaseBuilder(
         context.applicationContext,
@@ -14,24 +14,26 @@ class SettingRepository private constructor(context: Context){
         Constant.DATABASE_NAME
     ).build()
 
-    private val settingDao = database.settingDao()
+    private val optionDao = database.optionDao()
 
-    fun insert(dto: Setting) = settingDao.insert(dto)
+    fun insert(dto: Option) = optionDao.insert(dto)
 
-    suspend fun update(dto: Setting) = settingDao.update(dto)
+    suspend fun update(dto: Option) = optionDao.update(dto)
 
-    fun getSetting(id: Long): Setting = settingDao.selectOne(id)
+    fun getSettingById(id: Long): Option = optionDao.selectOneById(id)
+
+    fun getSettingByOptionName(optionName: String) : Option = optionDao.selectOneByOptionName(optionName)
 
     companion object {
-        private var INSTANCE: SettingRepository?=null
+        private var INSTANCE: OptionRepository?=null
 
         fun initialize(context: Context) {
             if (INSTANCE == null) {
-                INSTANCE = SettingRepository(context)
+                INSTANCE = OptionRepository(context)
             }
         }
 
-        fun get(): SettingRepository {
+        fun get(): OptionRepository {
             return INSTANCE ?:
             throw IllegalStateException("SettingRepository must be initialized")
         }

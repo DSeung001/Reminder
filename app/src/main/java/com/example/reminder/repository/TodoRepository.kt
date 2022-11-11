@@ -30,7 +30,7 @@ class TodoRepository private constructor(context: Context){
 
     fun getCount(selectOnDate:String) = todoDao.getCount(selectOnDate)
 
-    fun autoDelayUpdate(selectOnDate:String) = todoDao.autoDelayUpdate(selectOnDate)
+    fun toDelayList(selectOnDate:String) = todoDao.toDelayList(selectOnDate)
 
     companion object {
         private var INSTANCE: TodoRepository?=null

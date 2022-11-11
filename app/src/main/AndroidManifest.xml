@@ -22,7 +22,7 @@
             android:exported="true"></receiver>
 
         <activity
-            android:name=".SettingActivity"
+            android:name=".OptionActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

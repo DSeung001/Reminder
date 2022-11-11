@@ -62,13 +62,12 @@ interface TodoDao {
     fun getCount(selectOnDate:String): List<TodoCount>
 
     @Query("" +
-            "UPDATE todoTable SET delay = delay+1 WHERE ID in (" +
-            "SELECT td.id as id " +
+            "SELECT td.id AS id, title, started_at, repeat, content, delay, created_at, expired_at " +
             "FROM todoTable AS td " +
             "LEFT JOIN historyTable ON todo_id = td.id " +
-            "AND setting_on = (:selectOnDate) "+
-            "WHERE JulianDay((:selectOnDate)) >= JulianDay(started_at) " +
+            "AND todo_id IS NULL "+
+            "WHERE JulianDay((:selectOnDate)) > JulianDay(started_at) " +
             "AND Cast((JulianDay((:selectOnDate)) - JulianDay(started_at)) As Integer) % repeat = 0 " +
-            "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) ))")
-    fun autoDelayUpdate(selectOnDate:String)
+            "AND expired_at IS NULL ")
+    fun toDelayList(selectOnDate:String): Array<Todo>
 }

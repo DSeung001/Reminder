@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
         DelaySetting().setting(this, delayManager)
 
-
         // today
         binding.tvToday.text = SimpleDateFormat("yyyy년 MM월 dd일").format(System.currentTimeMillis())
 

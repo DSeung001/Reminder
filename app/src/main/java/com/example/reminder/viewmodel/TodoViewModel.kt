@@ -9,18 +9,13 @@ import com.example.reminder.repository.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TodoViewModel(date: String?) : ViewModel() {
+class TodoViewModel(date: String) : ViewModel() {
     val todoList: LiveData<MutableList<TodoDao.TodoHistory>>
 
     private val todoRepository: TodoRepository = TodoRepository.get()
 
     init {
-        todoList = if (date == null){
-            todoRepository.list()
-        } else{
-            todoRepository.listOnDate(date)
-        }
-
+        todoList = todoRepository.listOnDate(date)
     }
 
     fun getOne(id: Long) = todoRepository.getTodo(id)

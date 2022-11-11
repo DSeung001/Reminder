@@ -18,8 +18,6 @@ class TodoRepository private constructor(context: Context){
 
     private val todoDao = database.todoDao()
 
-    fun list(): LiveData<MutableList<TodoDao.TodoHistory>> = todoDao.list()
-
     fun listOnDate(selectOnDate:String): LiveData<MutableList<TodoDao.TodoHistory>> = todoDao.listOnDate(selectOnDate)
 
     fun getTodo(id: Long): Todo = todoDao.selectOne(id)
@@ -30,7 +28,7 @@ class TodoRepository private constructor(context: Context){
 
     fun delete(dto: Todo) = todoDao.delete(dto)
 
-    fun getCount() = todoDao.getCount()
+    fun getCount(selectOnDate:String) = todoDao.getCount(selectOnDate)
 
     fun autoDelayUpdate(selectOnDate:String) = todoDao.autoDelayUpdate(selectOnDate)
 

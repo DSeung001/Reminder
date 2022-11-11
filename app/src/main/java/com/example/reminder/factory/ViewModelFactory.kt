@@ -3,13 +3,16 @@ package com.example.reminder.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.reminder.viewmodel.TodoViewModel
+import java.text.SimpleDateFormat
 
 
 class ViewModelFactory(date: String?): ViewModelProvider.Factory {
-    private var date: String? = null
+    private var date: String = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
 
     init {
-        this.date = date
+        if (date != null){
+            this.date = date
+        }
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

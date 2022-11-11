@@ -14,16 +14,6 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(dto: Todo)
 
-    @Query("" +
-            "SELECT td.id as id, title, started_at, repeat, content, delay, result, created_at, JulianDay( date('now')) AS num_now, JulianDay(started_at) AS num_started_at " +
-            "FROM todoTable AS td " +
-            "LEFT JOIN historyTable ON todo_id = td.id " +
-            "AND setting_on = date('now')" +
-            "WHERE num_now >= num_started_at " +
-            "AND Cast((num_now - num_started_at) As Integer) % repeat = 0 " +
-            "AND expired_at IS NULL")
-    fun list(): LiveData<MutableList<TodoHistory>>
-
     data class TodoHistory(
         val id: Long,
         val title: String,
@@ -65,11 +55,11 @@ interface TodoDao {
             "SELECT COUNT(*) AS count " +
             "FROM todoTable AS td " +
             "LEFT JOIN historyTable ON todo_id = td.id " +
-            "AND setting_on = date('now')" +
-            "WHERE JulianDay(date('now')) >= JulianDay(started_at) " +
-            "AND Cast((JulianDay(date('now')) - JulianDay(started_at)) As Integer) % repeat = 0 " +
-            "AND expired_at IS NULL")
-    fun getCount(): List<TodoCount>
+            "AND setting_on = (:selectOnDate)" +
+            "WHERE JulianDay((:selectOnDate)) >= JulianDay(started_at) " +
+            "AND Cast((JulianDay((:selectOnDate)) - JulianDay(started_at)) As Integer) % repeat = 0 " +
+            "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) )")
+    fun getCount(selectOnDate:String): List<TodoCount>
 
     @Query("" +
             "UPDATE todoTable SET delay = delay+1 WHERE ID in (" +
@@ -77,8 +67,8 @@ interface TodoDao {
             "FROM todoTable AS td " +
             "LEFT JOIN historyTable ON todo_id = td.id " +
             "AND setting_on = (:selectOnDate) "+
-            "WHERE JulianDay(date('now')) >= JulianDay(started_at) " +
-            "AND Cast((JulianDay(date('now')) - JulianDay(started_at)) As Integer) % repeat = 0 " +
+            "WHERE JulianDay((:selectOnDate)) >= JulianDay(started_at) " +
+            "AND Cast((JulianDay((:selectOnDate)) - JulianDay(started_at)) As Integer) % repeat = 0 " +
             "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) ))")
     fun autoDelayUpdate(selectOnDate:String)
 }

@@ -50,6 +50,8 @@
   - ViewModelFactory 기능을 사용해 ViewModel 에 성공적으로 값을 넘겨 달력 기능을 만들 수 있었습니다. 
 - Activity 에서 바로 room 의 데이터 사용 시 에러가 발생
   - UI 스레드에서는 지연이 생기는 작업을 할 수 없음, 별도의 스레드로 해결한다.
+- S22 울트라에서 자동 꺼짐 현상이 발생하네?
+  - 안드로이드 12 버전 이후 부터는 PendingIntent.FLAG_IMMUTABLE 설정이 필수이므로 플래그 수정했습니다. 
 
 <hr/>
 

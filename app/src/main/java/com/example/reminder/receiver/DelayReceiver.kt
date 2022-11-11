@@ -21,7 +21,7 @@ class DelayReceiver : BroadcastReceiver() {
         notFinishDelay()
     }
 
-    fun notFinishDelay (){
+    private fun notFinishDelay (){
         CoroutineScope(Dispatchers.IO).launch {
             val setting = settingRepository.getSetting(1)
 

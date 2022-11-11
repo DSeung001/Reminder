@@ -17,6 +17,7 @@ import com.example.reminder.repository.TodoRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -73,15 +74,16 @@ class AlarmReceiver : BroadcastReceiver() {
             .setDefaults(NotificationCompat.DEFAULT_ALL)
 
         CoroutineScope(Dispatchers.IO).launch {
-            builder.setContentTitle("오늘 할일은")
             var todayTodoCount = 0
-            if(todoRepository.getCount().isNotEmpty()){
-                todayTodoCount = todoRepository.getCount()[0].count.toInt()
+            val todayString = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
+
+            builder.setContentTitle("오늘 할 일은")
+            if(todoRepository.getCount(todayString).isNotEmpty()){
+                todayTodoCount = todoRepository.getCount(todayString)[0].count.toInt()
             }
             if (todayTodoCount > 0){
                 builder.setContentText(todayTodoCount.toString()+"개 있습니다.")
             }
-
             notificationManager.notify(ALARM_NOTIFICATION_ID, builder.build())
         }
     }

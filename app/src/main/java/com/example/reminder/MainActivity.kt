@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -195,15 +196,32 @@ class MainActivity : AppCompatActivity() {
             }
 
             // alarm first setting
-            if(optionRepository.getSettingByOptionName("first_alarm_setting").option_value == "false"){
+            val firstAlarmSetting = optionRepository.getSettingByOptionName("first_alarm_setting")
+            if(firstAlarmSetting.option_value == "false"){
                 val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
                 AlarmSetting().setting(this@MainActivity, alarmManager)
+
+                optionRepository.update(Option(
+                    firstAlarmSetting!!.id,
+                    firstAlarmSetting!!.option_name,
+                    "true"
+                ))
             }
 
             // delay setting
-            if(optionRepository.getSettingByOptionName("first_auto_delay_setting").option_value == "false"){
+            val firstAutoDelaySetting = optionRepository.getSettingByOptionName("first_auto_delay_setting")
+            if(firstAutoDelaySetting.option_value == "false"){
                 val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
                 DelaySetting().setting(this@MainActivity, delayManager)
+
+                optionRepository.update(Option(
+                    firstAutoDelaySetting!!.id,
+                    firstAutoDelaySetting!!.option_name,
+                    "true"
+                ))
+
+                val autoDelay = optionRepository.getSettingByOptionName("auto_delay")
+                Log.d("test", "autoDelay2 : "+autoDelay.option_value)
             }
         }
     }

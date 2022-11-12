@@ -13,6 +13,8 @@ class DelaySetting {
 
     fun setting(context: Context, alarmManager: AlarmManager) {
 
+        Log.d("test", "DelaySetting : setting")
+
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             Constant.DELAY_NOTIFICATION_ID,

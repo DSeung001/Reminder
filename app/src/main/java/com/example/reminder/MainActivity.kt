@@ -1,8 +1,10 @@
 package com.example.reminder
 
 import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,8 @@ import com.example.reminder.dto.History
 import com.example.reminder.dto.Todo
 import com.example.reminder.dto.Option
 import com.example.reminder.factory.ViewModelFactory
+import com.example.reminder.receiver.AlarmReceiver
+import com.example.reminder.receiver.DelayReceiver
 import com.example.reminder.repository.OptionRepository
 import com.example.reminder.setting.AlarmSetting
 import com.example.reminder.setting.DelaySetting
@@ -63,6 +68,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("test","onCreate");
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -138,8 +145,7 @@ class MainActivity : AppCompatActivity() {
                                 // 이거 이렇게 하니깐 짧은 복사 그거 문제 나오네
                                 val todo = todoViewModel.getOne(itemId)
                                 val cal = Calendar.getInstance()
-                                cal.add(Calendar.DATE, 2)
-                                cal.add(Calendar.DATE, -todo!!.repeat)
+                                cal.add(Calendar.DATE, 1)
                                 val newStartedAt = "%d-%02d-%02d".format(
                                     cal.get(Calendar.YEAR),
                                     cal.get(Calendar.MONTH)+1,
@@ -186,8 +192,10 @@ class MainActivity : AppCompatActivity() {
 
     // database seeding, alarm service starting
     private fun applicationInitialization() {
+        Log.d("test","applicationInitialization");
         CoroutineScope(Dispatchers.IO).launch {
             val setting = optionRepository.getSettingById(1)
+            val context = this@MainActivity
             if(setting == null){
                 optionRepository.insert(Option(0, "alarm_time", "11:00"))
                 optionRepository.insert(Option(0, "auto_delay", "false"))
@@ -197,9 +205,18 @@ class MainActivity : AppCompatActivity() {
 
             // alarm first setting
             val firstAlarmSetting = optionRepository.getSettingByOptionName("first_alarm_setting")
-            if(firstAlarmSetting.option_value == "false"){
+            val alarmServiceUp = PendingIntent.getBroadcast(
+                context,
+                Constant.ALARM_NOTIFICATION_ID,
+                Intent(context, AlarmReceiver::class.java),
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_NO_CREATE
+            ) != null
+
+
+            if(firstAlarmSetting.option_value == "false" || alarmServiceUp){
+                Log.d("test","alarm setting 실행");
                 val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-                AlarmSetting().setting(this@MainActivity, alarmManager)
+                AlarmSetting().setting(context, alarmManager)
 
                 optionRepository.update(Option(
                     firstAlarmSetting!!.id,
@@ -210,18 +227,24 @@ class MainActivity : AppCompatActivity() {
 
             // delay setting
             val firstAutoDelaySetting = optionRepository.getSettingByOptionName("first_auto_delay_setting")
-            if(firstAutoDelaySetting.option_value == "false"){
+
+            val delayServiceUp = PendingIntent.getBroadcast(
+                context,
+                Constant.DELAY_NOTIFICATION_ID,
+                Intent(context, DelayReceiver::class.java),
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_NO_CREATE
+            ) != null
+
+            if(firstAutoDelaySetting.option_value == "false" || delayServiceUp){
+                Log.d("test","delay setting 실행");
                 val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
-                DelaySetting().setting(this@MainActivity, delayManager)
+                DelaySetting().setting(context, delayManager)
 
                 optionRepository.update(Option(
                     firstAutoDelaySetting!!.id,
                     firstAutoDelaySetting!!.option_name,
                     "true"
                 ))
-
-                val autoDelay = optionRepository.getSettingByOptionName("auto_delay")
-                Log.d("test", "autoDelay2 : "+autoDelay.option_value)
             }
         }
     }

@@ -25,7 +25,7 @@ class DelaySetting {
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 1)
+            set(Calendar.MINUTE, 0)
         }
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,

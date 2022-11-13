@@ -35,13 +35,15 @@ class DelayReceiver : BroadcastReceiver() {
                 calendar.add(Calendar.DAY_OF_YEAR, -1)
 
                 // 조건문은 통과하는데 아래 리스트가 하나도 나오지 않아서 막힌듯
-                val list = todoRepository.toDelayList(SimpleDateFormat("yyyy-MM-dd").format(calendar.time))
-                Log.d("test", "size : "+list.size)
+                val date = SimpleDateFormat("yyyy-MM-dd").format(calendar.time)
+                val list = todoRepository.toDelayList(date)
+
+                Log.d("test", "date : $date")
+                Log.d("test", "size : "+list.size.toString())
+
                 for (todo in list) {
                     Log.d("test", "DelayReceiver, todo title "+todo.title)
                     val cal = Calendar.getInstance()
-                    cal.add(Calendar.DATE, 1)
-                    cal.add(Calendar.DATE, -todo.repeat)
                     val newStartedAt = "%d-%02d-%02d".format(
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH)+1,

@@ -73,13 +73,13 @@ interface TodoDao {
     fun toDelayList(selectOnDate:String): Array<Todo>*/
 
     @Query("" +
-            "SELECT * FROM todoTable WHERE ID NOT IN (" +
-            "SELECT td.id as id " +
+            "SELECT td.id AS id, title, started_at, repeat, content, delay, result, created_at, expired_at "+
             "FROM todoTable AS td " +
             "LEFT JOIN historyTable ON todo_id = td.id " +
             "AND setting_on = (:selectOnDate) "+
             "WHERE JulianDay((:selectOnDate)) >= JulianDay(started_at) " +
             "AND Cast((JulianDay((:selectOnDate)) - JulianDay(started_at)) As Integer) % repeat = 0 " +
-            "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) ))")
+            "AND (expired_at IS NULL OR JulianDay(expired_at) > JulianDay((:selectOnDate)) ) " +
+            "AND historyTable.id IS NULL" )
     fun toDelayList(selectOnDate:String): Array<Todo>
 }

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.reminder.Constant.Companion.ALARM_CHANNEL_ID
 import com.example.reminder.Constant.Companion.ALARM_NOTIFICATION_ID
@@ -55,6 +56,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
     // Notification 등록
     private fun deliverNotification(context: Context) {
+        Log.d("test","AlarmReceiver, deliverNotification")
+
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,

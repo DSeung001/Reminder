@@ -11,13 +11,3 @@ class Option(
     @ColumnInfo(name = "option_value") var option_value: String
     ): java.io.Serializable{
 }
-
-
-/*
-*
-* name, value로 값을 바꾸고
-*  alarm_time = "11:00"
-*  auto_delay = "false"
-*  first_alarm_setting = "false"
-*  first_alarm_setting = "false"
-* */

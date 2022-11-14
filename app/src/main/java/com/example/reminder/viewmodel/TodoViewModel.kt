@@ -10,11 +10,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TodoViewModel(date: String) : ViewModel() {
-    val todoList: LiveData<MutableList<TodoDao.TodoHistory>>
+    var todoList: LiveData<MutableList<TodoDao.TodoHistory>>
 
     private val todoRepository: TodoRepository = TodoRepository.get()
 
     init {
+        todoList = todoRepository.listOnDate(date)
+    }
+
+    fun reInit(date: String){
         todoList = todoRepository.listOnDate(date)
     }
 

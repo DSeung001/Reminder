@@ -1,17 +1,16 @@
 package com.example.reminder
 
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminder.adapter.CalendarAdapter
 import com.example.reminder.databinding.ActivityCalendarBinding
 import com.example.reminder.factory.ViewModelFactory
+import com.example.reminder.repository.TodoRepository
 import com.example.reminder.viewmodel.TodoViewModel
+import java.text.SimpleDateFormat
 import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
@@ -25,19 +24,19 @@ class CalendarActivity : AppCompatActivity() {
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // actionbar color chagne
-        val actionBar: ActionBar?
-        actionBar = supportActionBar
-        val colorDrawable = ColorDrawable(Color.parseColor("#303030"))
-        actionBar!!.setBackgroundDrawable(colorDrawable)
+        val timeInMillis = intent.getLongExtra("timeInMillis", 0)
+        val currentCalendar:Calendar = Calendar.getInstance()
+        var currentTimeString = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
 
-        var date = intent.getStringExtra("date")
-        var timeInMillis = intent.getLongExtra("timeInMillis", 0)
+        Log.d("test", currentTimeString)
+
         if (timeInMillis > 0){
-            binding.calendarView.setDate(timeInMillis)
+            currentCalendar.setTimeInMillis(timeInMillis)
+            currentTimeString = SimpleDateFormat("yyyy-MM-dd").format(currentCalendar.time)
         }
+        binding.calendarView.setDateSelected(currentCalendar, true)
 
-        todoViewModel = ViewModelProvider(this, ViewModelFactory(date)).get(TodoViewModel::class.java)
+        todoViewModel = ViewModelProvider(this, ViewModelFactory(currentTimeString)).get(TodoViewModel::class.java)
 
         todoViewModel.todoList.observe(this){
             calendarAdapter.update(it)
@@ -47,21 +46,16 @@ class CalendarActivity : AppCompatActivity() {
         binding.rvTodoList.layoutManager = LinearLayoutManager(this)
         binding.rvTodoList.adapter = calendarAdapter
 
-        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            var date = String.format("%04d-%02d-%02d", year, month+1, dayOfMonth)
-            var calendar:Calendar = Calendar.getInstance()
-            calendar.set(year,month,dayOfMonth)
 
-            finish()
-            overridePendingTransition(0, 0)
+        binding.calendarView.setOnDateChangedListener{ widget, date, selected ->
+            val selectedDate = SimpleDateFormat("yyyy-MM-dd").format(date.calendar.time)
 
-            val newIntent = Intent(this, CalendarActivity::class.java)
-            newIntent.putExtra("timeInMillis", calendar.timeInMillis)
-            newIntent.putExtra("date", date);
-            startActivity(newIntent)
+            Log.d("test", selectedDate)
 
-            overridePendingTransition(0, 0)
-
+            todoViewModel.reInit(selectedDate)
+            todoViewModel.todoList.observe(this){
+                calendarAdapter.update(it)
+            }
         }
     }
 }

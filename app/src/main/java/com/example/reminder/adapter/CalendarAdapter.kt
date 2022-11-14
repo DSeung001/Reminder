@@ -1,17 +1,14 @@
 package com.example.reminder.adapter
 
 import android.content.Context
-import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reminder.R
 import com.example.reminder.dao.TodoDao
-import com.example.reminder.dto.Todo
 
 class CalendarAdapter(val context: Context):RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 

@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         todoAdapter.setItemBtnClearClickListener(object: TodoAdapter.ItemBtnClearClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val date = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
+                    val date = Calendar.DATE.toString()
                     var history = historyViewModel.getHistory(itemId, date)
                     if (history == null) {
                         historyViewModel.insert(History(0, itemId, true, date))
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
         todoAdapter.setItemBtnClearCancelClickListener(object: TodoAdapter.ItemBtnClearCancelClickListener{
             override fun onClick(view: View, position: Int, itemId: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val date = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
+                    val date = Calendar.DATE.toString()
                     var history = historyViewModel.getHistory(itemId, date)
                     historyViewModel.delete(history)
                 }
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                                     todo!!.content,
                                     todo!!.delay,
                                     todo!!.created_at,
-                                    java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),
+                                    Calendar.DATE.toString(),
                                 )
                                 todoViewModel.insert(newTodo)
                                 todoViewModel.update(updateTodo)

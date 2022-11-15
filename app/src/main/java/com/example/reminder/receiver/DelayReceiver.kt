@@ -66,7 +66,7 @@ class DelayReceiver : BroadcastReceiver() {
                         todo.content,
                         todo.delay,
                         todo.created_at,
-                        SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),
+                        Calendar.DATE.toString(),
                     )
                     todoRepository.insert(newTodo)
                     todoRepository.update(updateTodo)

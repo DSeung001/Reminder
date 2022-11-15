@@ -104,7 +104,7 @@ class EditTodoActivity : AppCompatActivity() {
                 DialogInterface.OnClickListener{
                     dialog, id ->
                     val intent = Intent().apply {
-                        val todo = Todo(todo!!.id, todo!!.title, todo!!.started_at, todo!!.repeat, todo!!.content, todo!!.delay, todo!!.created_at, java.text.SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis()),)
+                        val todo = Todo(todo!!.id, todo!!.title, todo!!.started_at, todo!!.repeat, todo!!.content, todo!!.delay, todo!!.created_at, Calendar.DATE.toString(),)
                         putExtra("todo", todo)
                         putExtra("flag", 2)
                     }

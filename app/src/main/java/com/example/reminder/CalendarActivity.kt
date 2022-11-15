@@ -87,7 +87,7 @@ class CalendarActivity : AppCompatActivity() {
                     if (todoCount.isNotEmpty() && todoCount[0].count.toInt() > 0) {
                         Log.d("test", repeatDay+" "+todoCount.toString())
                         val checkCalendarDay = CalendarDay.from(date.year, date.month, re)
-                        binding.calendarView.addDecorator(HighlightingDecorator(Collections.singleton(checkCalendarDay)))
+//                        binding.calendarView.addDecorator(HighlightingDecorator(Collections.singleton(checkCalendarDay)))
 
 
 //                        binding.calendarView.addDecorator(HighlightingDecorator())
@@ -99,10 +99,10 @@ class CalendarActivity : AppCompatActivity() {
 //                        dates += repeatCalendarDay
                     }
                 }
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.calendarView!!.removeDecorators()
-                    binding.calendarView!!.invalidateDecorators()
-                }, 0)
+//                Handler(Looper.getMainLooper()).postDelayed({
+//                    binding.calendarView!!.removeDecorators()
+//                    binding.calendarView!!.invalidateDecorators()
+//                }, 0)
             }
 
 //            Log.d("test", "size : "+dates.size.toString())

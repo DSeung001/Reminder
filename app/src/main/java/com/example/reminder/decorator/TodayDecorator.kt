@@ -1,5 +1,4 @@
-`package com.example.reminder.decorator
-
+package com.example.reminder.decorator
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan

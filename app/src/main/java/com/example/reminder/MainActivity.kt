@@ -24,10 +24,12 @@ import com.example.reminder.factory.ViewModelFactory
 import com.example.reminder.receiver.AlarmReceiver
 import com.example.reminder.receiver.DelayReceiver
 import com.example.reminder.repository.OptionRepository
+import com.example.reminder.repository.TodoRepository
 import com.example.reminder.setting.AlarmSetting
 import com.example.reminder.setting.DelaySetting
 import com.example.reminder.viewmodel.HistoryViewModel
 import com.example.reminder.viewmodel.TodoViewModel
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var todoAdapter: TodoAdapter
 
     val optionRepository = OptionRepository.get()
+    val todoRepository = TodoRepository.get()
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -86,7 +89,30 @@ class MainActivity : AppCompatActivity() {
             })
         }
         binding.imgBtnCalendar.setOnClickListener{
-            requestActivity.launch(Intent(this, CalendarActivity::class.java))
+
+            var dateArray: Array<String> = emptyArray()
+            var countArray: Array<String> = emptyArray()
+
+            CoroutineScope(Dispatchers.IO).launch{
+
+                val nowCalendar = Calendar.getInstance()
+                val lastDay = nowCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+                // 아래 부분 함수와 필요 => 여러 개의 달에 적용하기 위함
+                for (re in 1..lastDay) {
+                    val repeatDay = SimpleDateFormat("yyyy-MM-").format(nowCalendar.time) + ("%02d".format(re))
+                    val todoCount = todoRepository.getCount(repeatDay)
+                    if (todoCount.isNotEmpty() && (todoCount[0].count.toInt() > 0)) {
+                        dateArray += repeatDay
+                        countArray += todoCount[0].count.toString()
+                    }
+                }
+
+                requestActivity.launch(Intent(this@MainActivity, CalendarActivity::class.java).apply {
+                    putExtra("dateArray", dateArray)
+                    putExtra("countArray", countArray)
+                })
+            }
         }
 
         todoViewModel.todoList.observe(this){

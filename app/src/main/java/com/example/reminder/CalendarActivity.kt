@@ -1,9 +1,6 @@
 package com.example.reminder
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +11,6 @@ import com.example.reminder.factory.ViewModelFactory
 import com.example.reminder.repository.TodoRepository
 import com.example.reminder.viewmodel.TodoViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,24 +20,60 @@ class CalendarActivity : AppCompatActivity() {
     lateinit var todoViewModel: TodoViewModel
     lateinit var calendarAdapter: CalendarAdapter
 
-    private val todoRepository: TodoRepository = TodoRepository.get()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val timeInMillis = intent.getLongExtra("timeInMillis", 0)
+        // CalendarActivity Init
+        calendarInitialization()
+
+        binding.calendarView.setOnDateChangedListener{ widget, date, selected ->
+            val selectedDate = SimpleDateFormat("yyyy-MM-dd").format(date.calendar.time)
+            todoViewModel.reInit(selectedDate)
+            todoViewModel.todoList.observe(this){
+                calendarAdapter.update(it)
+            }
+        }
+    }
+
+    fun calendarInitialization(){
         val currentCalendar:Calendar = Calendar.getInstance()
+        val timeInMillis = intent.getLongExtra("timeInMillis", 0)
+        val dateArray = intent.getStringArrayExtra("dateArray", )
+        val countArray = intent.getStringArrayExtra("countArray", )
         var currentTimeString = Calendar.DATE.toString()
+        var addTextCalendarDays : List<CalendarDay> = listOf()
+        var countMap = mutableMapOf<String,String>()
+
+        if (dateArray != null && countArray != null) {
+            var index = 0
+            for(date in dateArray){
+                val splitDate = date.split("-")
+                val year = splitDate[0].toInt()
+                val month = splitDate[1].toInt()-1
+                val date = splitDate[2].toInt()
+
+                addTextCalendarDays += CalendarDay.from(year, month, date)
+
+                /*
+                * Decorator 에 CalendarDay 리스트 및 Map<String,String> 을 보내서 해결하려 했으나
+                * shouldDecorated 와 decorate 가 무조건 같이 실행이 안됨
+                * */
+                binding.calendarView.addDecorator(HighlightingDecorator(
+                    Collections.singleton(CalendarDay.from(year, month, date)),
+                    countArray[index]
+                ))
+
+                countMap[date.toString()] = countArray[index]
+                index++
+            }
+        }
 
         if (timeInMillis > 0){
             currentCalendar.setTimeInMillis(timeInMillis)
             currentTimeString = SimpleDateFormat("yyyy-MM-dd").format(currentCalendar.time)
         }
-        binding.calendarView.setDateSelected(currentCalendar, true)
-        binding.calendarView.addDecorator(SundayDecoraotr())
-        binding.calendarView.addDecorator(SaturdayDecorator())
 
         todoViewModel = ViewModelProvider(this, ViewModelFactory(currentTimeString)).get(TodoViewModel::class.java)
 
@@ -55,65 +85,11 @@ class CalendarActivity : AppCompatActivity() {
         binding.rvTodoList.layoutManager = LinearLayoutManager(this)
         binding.rvTodoList.adapter = calendarAdapter
 
+        binding.calendarView.setDateSelected(currentCalendar, true)
+//        binding.calendarView.addDecorator(AddTextDecorator(addTextCalendarDays, countMap))
         binding.calendarView.addDecorator(TodayDecorator())
+        binding.calendarView.addDecorator(SundayDecoraotr())
+        binding.calendarView.addDecorator(SaturdayDecorator())
 
-        binding.calendarView.setOnDateChangedListener{ widget, date, selected ->
-            val selectedDate = SimpleDateFormat("yyyy-MM-dd").format(date.calendar.time)
-
-            todoViewModel.reInit(selectedDate)
-            todoViewModel.todoList.observe(this){
-                calendarAdapter.update(it)
-            }
-
-//            binding.calendarView.addDecorator(HighlightingDecorator())
-            binding.calendarView.addDecorator(HighlightingDecorator(Collections.singleton(date)))
-
-        }
-
-        binding.calendarView.setOnMonthChangedListener { widget, date ->
-            
-            val lastDay = date.calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-            
-            
-//            Log.d("test", dates.size.toString())
-
-            for (re in 1..3) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val repeatDay =
-                        SimpleDateFormat("yyyy-MM-").format(date.calendar.time) + ("%02d".format(re))
-                    val repeatCalendarDay = CalendarDay.from(date.year, date.month, re)
-                    val todoCount = todoRepository.getCount(repeatDay)
-
-                    if (todoCount.isNotEmpty() && todoCount[0].count.toInt() > 0) {
-                        Log.d("test", repeatDay+" "+todoCount.toString())
-                        val checkCalendarDay = CalendarDay.from(date.year, date.month, re)
-//                        binding.calendarView.addDecorator(HighlightingDecorator(Collections.singleton(checkCalendarDay)))
-
-
-//                        binding.calendarView.addDecorator(HighlightingDecorator())
-
-//                        Log.d("test",
-//                            repeatCalendarDay.toString() + ", " + todoCount[0].count.toInt()
-//                                .toString()
-//                        )
-//                        dates += repeatCalendarDay
-                    }
-                }
-//                Handler(Looper.getMainLooper()).postDelayed({
-//                    binding.calendarView!!.removeDecorators()
-//                    binding.calendarView!!.invalidateDecorators()
-//                }, 0)
-            }
-
-//            Log.d("test", "size : "+dates.size.toString())
-//            binding.calendarView.addDecorator(HighlightingDecorator(Collections.singleton(repeatCalendarDay)))
-
-
-//                Log.d("test", dates.size.toString())
-//            Log.d("test", dates.size.toString())
-
-
-
-        }
     }
 }

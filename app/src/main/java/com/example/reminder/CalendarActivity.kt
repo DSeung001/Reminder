@@ -40,7 +40,7 @@ class CalendarActivity : AppCompatActivity() {
         val currentCalendar:Calendar = Calendar.getInstance()
         val dateArray = intent.getStringArrayExtra("dateArray", )
         val countArray = intent.getStringArrayExtra("countArray", )
-        var currentTimeString = Calendar.DATE.toString()
+        var currentTimeString = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
 
         binding.calendarView.setTileSizeDp(50)
 

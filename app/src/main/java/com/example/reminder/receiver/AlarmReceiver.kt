@@ -18,7 +18,7 @@ import com.example.reminder.repository.TodoRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.text.SimpleDateFormat
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -78,7 +78,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             var todayTodoCount = 0
-            val todayString = Calendar.DATE.toString()
+            val todayString = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
             val todoCount = todoRepository.getCount(todayString)
 
             builder.setContentTitle("오늘 할 일은")

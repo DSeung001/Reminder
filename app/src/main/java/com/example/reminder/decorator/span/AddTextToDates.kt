@@ -6,7 +6,7 @@ import android.text.style.LineBackgroundSpan
 
 class AddTextToDates(text: String) : LineBackgroundSpan {
 
-    private var dayPrice = text
+    private var dayText = text
 
     override fun drawBackground(
         canvas: Canvas,
@@ -21,6 +21,6 @@ class AddTextToDates(text: String) : LineBackgroundSpan {
         end: Int,
         lnum: Int
     ) {
-        canvas.drawText(dayPrice,((left+right)/3).toFloat(),(bottom+25).toFloat(),paint)
+        canvas.drawText(dayText,((left+right)/3).toFloat(),(bottom+25).toFloat(),paint)
     }
 }

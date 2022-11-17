@@ -5,7 +5,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 
-class setTextDecorator(dates: Collection<CalendarDay>, count:String): DayViewDecorator {
+class SetTextDecorator(dates: Collection<CalendarDay>, count:String): DayViewDecorator {
 
     var dates: HashSet<CalendarDay> = HashSet(dates)
     var count = count

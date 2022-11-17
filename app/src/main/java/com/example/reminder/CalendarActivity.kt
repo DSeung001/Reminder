@@ -38,10 +38,11 @@ class CalendarActivity : AppCompatActivity() {
 
     fun calendarInitialization(){
         val currentCalendar:Calendar = Calendar.getInstance()
-        val timeInMillis = intent.getLongExtra("timeInMillis", 0)
         val dateArray = intent.getStringArrayExtra("dateArray", )
         val countArray = intent.getStringArrayExtra("countArray", )
         var currentTimeString = Calendar.DATE.toString()
+
+        binding.calendarView.setTileSizeDp(50)
 
         if (dateArray != null && countArray != null) {
             var index = 0
@@ -51,17 +52,12 @@ class CalendarActivity : AppCompatActivity() {
                 val month = splitDate[1].toInt()-1
                 val date = splitDate[2].toInt()
 
-                binding.calendarView.addDecorator(setTextDecorator(
+                binding.calendarView.addDecorator(SetTextDecorator(
                     Collections.singleton(CalendarDay.from(year, month, date)),
                     countArray[index]
                 ))
                 index++
             }
-        }
-
-        if (timeInMillis > 0){
-            currentCalendar.setTimeInMillis(timeInMillis)
-            currentTimeString = SimpleDateFormat("yyyy-MM-dd").format(currentCalendar.time)
         }
 
         todoViewModel = ViewModelProvider(this, ViewModelFactory(currentTimeString)).get(TodoViewModel::class.java)

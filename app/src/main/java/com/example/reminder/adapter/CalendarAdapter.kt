@@ -21,8 +21,10 @@ class CalendarAdapter(val context: Context):RecyclerView.Adapter<CalendarAdapter
 
         fun onBind(data:TodoDao.TodoHistory){
             title.text = data.title
-            if(data.result == true){
+            if (data.result == true) {
                 imgClear.visibility = View.VISIBLE
+            } else {
+                imgClear.visibility = View.INVISIBLE
             }
             tvDelay.text = "미룬 횟수 : "+data.delay
         }

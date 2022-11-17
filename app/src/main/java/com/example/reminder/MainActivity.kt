@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("test","onCreate");
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -216,7 +215,7 @@ class MainActivity : AppCompatActivity() {
 
     // database seeding, alarm service starting
     private fun applicationInitialization() {
-        Log.d("test","applicationInitialization");
+
         CoroutineScope(Dispatchers.IO).launch {
             val setting = optionRepository.getSettingById(1)
             val context = this@MainActivity
@@ -236,9 +235,8 @@ class MainActivity : AppCompatActivity() {
                 PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_NO_CREATE
             ) != null
 
-
             if(firstAlarmSetting.option_value == "false" || alarmServiceUp){
-                Log.d("test","alarm setting 실행");
+
                 val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
                 AlarmSetting().setting(context, alarmManager)
 
@@ -260,7 +258,6 @@ class MainActivity : AppCompatActivity() {
             ) != null
 
             if(firstAutoDelaySetting.option_value == "false" || delayServiceUp){
-                Log.d("test","delay setting 실행");
                 val delayManager = getSystemService(ALARM_SERVICE) as AlarmManager
                 DelaySetting().setting(context, delayManager)
 

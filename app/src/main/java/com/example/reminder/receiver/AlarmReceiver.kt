@@ -56,7 +56,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
     // Notification 등록
     private fun deliverNotification(context: Context) {
-        Log.d("test","AlarmReceiver, deliverNotification")
 
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(

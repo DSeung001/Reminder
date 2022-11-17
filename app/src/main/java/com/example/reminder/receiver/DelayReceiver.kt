@@ -25,23 +25,16 @@ class DelayReceiver : BroadcastReceiver() {
 
     @SuppressLint("SimpleDateFormat")
     private fun notFinishDelay (){
-        Log.d("test", "DelayReceiver, notFinishDelay")
         CoroutineScope(Dispatchers.IO).launch {
             val autoDelay = optionRepository.getSettingByOptionName("auto_delay")
-            Log.d("test", "autoDelay : "+autoDelay.option_value)
             if(autoDelay.option_value == "true"){
-                Log.d("test", "DelayReceiver, condition")
                 val calendar: Calendar = Calendar.getInstance()
                 calendar.add(Calendar.DAY_OF_YEAR, -1)
 
                 val date = SimpleDateFormat("yyyy-MM-dd").format(calendar.time)
                 val list = todoRepository.toDelayList(date)
 
-                Log.d("test", "date : $date")
-                Log.d("test", "size : "+list.size.toString())
-
                 for (todo in list) {
-                    Log.d("test", "DelayReceiver, todo title "+todo.title)
                     val cal = Calendar.getInstance()
                     val newStartedAt = "%d-%02d-%02d".format(
                         cal.get(Calendar.YEAR),
